@@ -1,2 +1,3 @@
-require('./babylonSetup');
-require('./reactSetup');
+import './babylonSetup';
+import './reactSetup';
+import './index.css';

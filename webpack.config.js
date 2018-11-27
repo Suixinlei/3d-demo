@@ -23,7 +23,7 @@ module.exports = {
         test: /\.css$/,
         use: [
           MiniCssExtractPlugin.loader,
-          path.join(__dirname, '..', '..', 'node_modules', 'css-loader'),
+          'css-loader',
         ],
       },
     ]
@@ -35,8 +35,8 @@ module.exports = {
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
-      filename: '[name].bundle.css',
-      chunkFilename: '[id].bundle.css',
+      filename: '[name].css',
+      chunkFilename: '[id].css',
     }),
     new webpack.SourceMapDevToolPlugin({}),
     new webpack.DefinePlugin({

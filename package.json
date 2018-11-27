@@ -13,13 +13,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@alife/aisc-widgets": "^2.3.2",
     "babylonjs": "^3.3.0",
     "react": "^16.6.3",
-    "react-dom": "^16.6.3"
+    "react-dom": "^16.6.3",
+    "styled-components": "^4.1.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
+    "babel-plugin-styled-components": "^1.9.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",

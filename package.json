@@ -13,7 +13,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "babylonjs": "^3.3.0"
+    "babylonjs": "^3.3.0",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

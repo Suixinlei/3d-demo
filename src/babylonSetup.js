@@ -1,49 +1,65 @@
-const BABYLON = require('babylonjs');
+import * as BABYLON from 'babylonjs';
 
-window.addEventListener('DOMContentLoaded', function(){
-  // get the canvas DOM element
-  var canvas = document.getElementById('renderCanvas');
+import CabinetScene from './scene/index';
+import Camera from './scene/camera';
 
-  // load the 3D engine
-  var engine = new BABYLON.Engine(canvas, true);
+import worldAxis from './utils/worldAxis';
+import cabinet from './model/cabinet';
 
-  // createScene function that creates and return the scene
-  var createScene = function(){
-    // create a basic BJS Scene object
-    var scene = new BABYLON.Scene(engine);
-
-    // create a FreeCamera, and set its position to (x:0, y:5, z:-10)
-    var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5,-10), scene);
-
-    // target the camera to scene origin
-    camera.setTarget(BABYLON.Vector3.Zero());
-
-    // attach the camera to the canvas
-    camera.attachControl(canvas, false);
-
-    // create a basic light, aiming 0,1,0 - meaning, to the sky
-    var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0,1,0), scene);
-
-    // create a built-in "sphere" shape; its constructor takes 6 params: name, segment, diameter, scene, updatable, sideOrientation
-    var sphere = BABYLON.Mesh.CreateSphere('sphere1', 16, 2, scene);
-
-    // move the sphere upward 1/2 of its height
-    sphere.position.y = 1;
-
-    // create a built-in "ground" shape;
-    var ground = BABYLON.Mesh.CreateGround('ground1', 6, 6, 2, scene);
-
-    // return the created scene
-    return scene;
-  }
+window.addEventListener('DOMContentLoaded', () => {
+  const canvas = document.getElementById('renderCanvas');
+  const engine = new BABYLON.Engine(canvas, true);
 
   // call the createScene function
-  var scene = createScene();
+  const scene = CabinetScene(engine);
 
-  // run the render loop
-  engine.runRenderLoop(function(){
-    scene.render();
+  const camera = Camera(scene);
+  camera.attachControl(canvas, false);
+
+  // 光
+  var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(20, 20, 100), scene);
+  // 光跟着camera走
+  scene.registerBeforeRender(function () {
+    light.position = camera.position;
   });
+
+  worldAxis(scene, 512);
+  const cabinet1 = cabinet(scene);
+  cabinet1.position.x = 10;
+  const cabinet2 = cabinet(scene);
+  cabinet2.position.y = 0;
+  const cabinet3 = cabinet(scene);
+  cabinet3.position.x = -10;
+
+  const assetsManager = new BABYLON.AssetsManager(scene);
+
+  // const floorTask = assetsManager.addMeshTask('floor task', '', 'http://127.0.0.1:9090/', 'floor.obj');
+  // floorTask.onSuccess = function (task) {
+  //   task.loadedMeshes[0].position.x = -250;
+  //   task.loadedMeshes[0].position.y = 0;
+  //   task.loadedMeshes[0].position.z = -1050;
+  // };
+  // floorTask.onError = function (task, message, exception) {
+  //   console.log(message, exception);
+  // };
+
+  const floorTask = assetsManager.addMeshTask('floor task', '', 'http://127.0.0.1:9090/', '机房模型-1.obj');
+  floorTask.onSuccess = function (task) {
+    task.loadedMeshes[0].position.x = -250;
+    task.loadedMeshes[0].position.y = 0;
+    task.loadedMeshes[0].position.z = -1050;
+  };
+  floorTask.onError = function (task, message, exception) {
+    console.log(message, exception);
+  };
+
+  assetsManager.onFinish = function (tasks) {
+    engine.runRenderLoop(function () {
+      scene.render();
+    });
+  };
+
+  assetsManager.load();
 
   // the canvas/window resize event handler
   window.addEventListener('resize', function(){

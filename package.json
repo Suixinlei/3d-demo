@@ -15,9 +15,11 @@
   "dependencies": {
     "@alife/aisc-widgets": "^2.3.2",
     "babylonjs": "^3.3.0",
+    "babylonjs-loaders": "^3.3.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "styled-components": "^4.1.1"
+    "styled-components": "^4.1.1",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -28,6 +30,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^1.0.1",
+    "file-loader": "^2.0.0",
     "mini-css-extract-plugin": "^0.4.5",
     "webpack": "^4.26.1",
     "webpack-cli": "^3.1.2",

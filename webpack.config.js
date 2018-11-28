@@ -12,6 +12,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx', 'json'],
+    alias: {
+      resource: path.join(__dirname, 'resource'),
+    },
   },
   module: {
     rules: [
@@ -26,6 +29,14 @@ module.exports = {
           'css-loader',
         ],
       },
+      {
+        test: /\.(obj|glTF)$/,
+        use: [
+          {
+            loader: 'file-loader',
+          }
+        ]
+      }
     ]
   },
   externals: {

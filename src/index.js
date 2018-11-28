@@ -1,3 +1,3 @@
 import './babylonSetup';
-import './reactSetup';
+// import './reactSetup';
 import './index.css';

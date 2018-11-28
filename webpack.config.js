@@ -4,20 +4,25 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   mode: 'development',
-  entry: path.join(__dirname, 'src', 'index.js'),
+  entry: path.join(__dirname, 'src', 'index.ts'),
   output: {
     path: path.resolve(__dirname, 'build'),
     publicPath: "/build/",
     filename: '[name].js',
   },
   resolve: {
-    extensions: ['.js', '.jsx', 'json'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx', 'json'],
     alias: {
       resource: path.join(__dirname, 'resource'),
     },
   },
   module: {
     rules: [
+      {
+        test: /\.(ts|tsx)/,
+        loader: 'awesome-typescript-loader',
+        exclude: /node_modules/,
+      },
       {
         test: /\.(js|jsx)$/,
         loader: 'babel-loader',
@@ -41,6 +46,8 @@ module.exports = {
   },
   externals: {
     babylonjs: 'BABYLON',
+    oimo: 'OIMO', //or true
+    cannon: 'CANNON' //or true
   },
   plugins: [
     new MiniCssExtractPlugin({

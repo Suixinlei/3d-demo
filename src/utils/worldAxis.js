@@ -37,4 +37,4 @@ var showAxis = function (scene, size) {
 };
 /***************************End World Axes***************************/
 
-module.exports = showAxis;
+export default showAxis;

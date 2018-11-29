@@ -35,7 +35,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(obj|glTF)$/,
+        test: /\.(png|jpg|gif)$/,
         use: [
           {
             loader: 'file-loader',

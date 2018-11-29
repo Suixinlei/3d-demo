@@ -1,9 +1,10 @@
-import Game from "./game";
+import App from "./app";
 import './index.css';
 
 window.addEventListener('DOMContentLoaded', () => {
-    let game = new Game('renderCanvas');
+    let app = new App('renderCanvas');
 
-    game.createScene();
-    game.doRender();
+    app.createScene();
+    app.createAssetsManager();
+    app.doRender();
 });

@@ -28,6 +28,8 @@ class App {
         // this._camera.attachControl(this._canvas, false);
 
         this._globalCamera = new BABYLON.FreeCamera('camera2', new BABYLON.Vector3(35, 88, -60), this._scene);
+        const globalCameraInputs : BABYLON.FreeCameraInputsManager = this._globalCamera.inputs;
+
         this._globalCamera.attachControl(this._canvas, false);
 
         // light
@@ -53,7 +55,7 @@ class App {
         const ground = BABYLON.MeshBuilder.CreateGround('ground', { width: 128, height: 128, subdivisions: 2 }, this._scene);
         const groundMat = new BABYLON.StandardMaterial('ground', this._scene);
         groundMat.diffuseTexture = new BABYLON.Texture('/textures/albedo.png', this._scene);
-        groundMat.backFaceCulling = false;
+        // groundMat.backFaceCulling = false;
         ground.material = groundMat;
 
         worldAxis(this._scene, 16);
@@ -65,7 +67,7 @@ class App {
         // 机柜任务
         const cabinetTask = this._assetsManager.addMeshTask('cabinet', '', `${rootUrl}server/`, 'scene.gltf');
         cabinetTask.onSuccess = (task) => {
-            console.log(task);
+            console.log('cabinet', task);
         };
         cabinetTask.onError = (task, message, exception) => {
             console.log(task, message, exception);

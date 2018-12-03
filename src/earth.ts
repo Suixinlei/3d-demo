@@ -23,11 +23,10 @@ class Earth {
         this._scene = new BABYLON.Scene(this._engine);
         this._scene.clearColor = new BABYLON.Color4(1, 1, 1, 1);
 
-        this._camera = new BABYLON.ArcRotateCamera('camera1', 0, 0, 200, BABYLON.Vector3.Zero(), this._scene);
+        this._camera = new BABYLON.ArcRotateCamera('camera1', Math.PI, 0, 250, BABYLON.Vector3.Zero(), this._scene);
         this._camera.lowerBetaLimit = 0.1;
         this._camera.upperBetaLimit = Math.PI;
-
-        this._camera.setPosition(new BABYLON.Vector3(0, 0, 180));
+        this._camera.setPosition(new BABYLON.Vector3(- 250, 0, 0));
         this._camera.attachControl(this._canvas, false);
         // this._camera.useAutoRotationBehavior = true;
         // this._camera.autoRotationBehavior.idleRotationSpeed = 0.10;
@@ -41,30 +40,24 @@ class Earth {
         earthMaterial.ambientTexture = new BABYLON.Texture('/textures/globe_4096.png', this._scene);
         this.earth.material = earthMaterial;
 
-        // const lngLat = geoData['黑龙江省'];
-        // const realPosition = convertLngLat(lngLat, 128);
-        // addPoint(realPosition, this._scene);
-
-        addPoint(convertLngLat({
-            lat: 29, // 纬度
-            lng: 120 // 经度
-        }, 128), this._scene);
+        const manager = new BABYLON.GUI.GUI3DManager(this._scene);
+        const hzPoint = addPoint('杭州', this._scene, manager);
+        const shPoint = addPoint('上海', this._scene, manager);
+        const bjPoint = addPoint('北京', this._scene, manager);
+        const szPoint = addPoint('深圳', this._scene, manager);
 
         worldAxis(this._scene, 512);
-
-        // let alpha = 0;
-        // this._scene.beforeRender = () => {
-        //     this.earth.rotation.y = alpha;
-        //     alpha -= 0.01;
-        // }
     }
 
     doRender(): void {
-        // this._scene.registerBeforeRender(() => {
-            // console.log(this._camera.autoRotationBehavior);
-        // });
+        this._scene.registerAfterRender(() => {
+            // const { x, y } = BABYLON.Vector3.Project(this.hzPoint.position, BABYLON.Matrix.Identity(), this._scene.getTransformMatrix(), this._camera.viewport.toGlobal(this._engine));
+            // this.hzPointLabel.style.top = `${y - 70}px`;
+            // this.hzPointLabel.style.left = `${x - 40}px`;
+            // console.log(this._scene.isActiveMesh(this.hzPoint));
+            // console.log(this._scene.activeCamera.getActiveMeshes());
+        });
         this._engine.runRenderLoop(() => {
-            // console.log(this._camera.globalPosition)
             this._scene.render();
         });
 

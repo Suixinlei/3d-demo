@@ -1,9 +1,8 @@
 import * as BABYLON from 'babylonjs';
 import worldAxis from './utils/worldAxis';
 
-import * as geoData from './utils/geo';
-import * as convertLngLat from './utils/convertLngLat';
 import * as addPoint from './utils/addPoint';
+import * as flyLine from './utils/flyLine';
 
 class Earth {
     private _canvas: HTMLCanvasElement;
@@ -46,6 +45,8 @@ class Earth {
         const bjPoint = addPoint('北京', this._scene, manager);
         const szPoint = addPoint('深圳', this._scene, manager);
 
+        // flyLine(hzPoint, bjPoint, this._scene);
+
         worldAxis(this._scene, 512);
     }
 
@@ -64,6 +65,11 @@ class Earth {
         window.addEventListener('resize', () => {
             this._engine.resize();
         });
+    }
+
+    destory() {
+        this._scene.dispose();
+        this._engine.dispose();
     }
 }
 

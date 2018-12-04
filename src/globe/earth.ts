@@ -27,8 +27,8 @@ class Earth {
         this._camera.upperBetaLimit = Math.PI;
         this._camera.setPosition(new BABYLON.Vector3(- 250, 0, 0));
         this._camera.attachControl(this._canvas, false);
-        // this._camera.useAutoRotationBehavior = true;
-        // this._camera.autoRotationBehavior.idleRotationSpeed = 0.10;
+        this._camera.useAutoRotationBehavior = true;
+        this._camera.autoRotationBehavior.idleRotationSpeed = 0.10;
 
         this._light = new BABYLON.HemisphericLight('light', this._camera.position, this._scene);
         this._light.specular = new BABYLON.Color3(0, 0, 0);

@@ -10,7 +10,7 @@
     "sourceMap": true,
     "experimentalDecorators": true,
     "isolatedModules": false,
-    "outDir": "./build",
+    "outDir": "./dist",
     "lib": [
       "dom",
       "es2015"

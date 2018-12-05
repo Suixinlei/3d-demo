@@ -23,9 +23,6 @@ module.exports = {
         // console检测
         command: 'fie console detect --force',
       },
-      {
-        command: 'npm run build',
-      },
     ],
 
     publish: [

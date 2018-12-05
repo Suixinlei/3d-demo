@@ -24,7 +24,7 @@ module.exports = (name, scene, manager) => {
     mesh.material.diffuseColor = new BABYLON.Color3(1, 1, 1);
   });
   point.onPointerUpObservable.add(() => {
-    console.log(name);
+    window.location.href = `/idc?name=${name}`;
   });
 
   return point;

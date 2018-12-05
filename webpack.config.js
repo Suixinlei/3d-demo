@@ -6,6 +6,8 @@ module.exports = {
   mode: 'development',
   entry: {
     globe: path.join(__dirname, 'src', 'globe', 'index.ts'),
+    idc: path.join(__dirname, 'src', 'idc', 'index.ts'),
+    room: path.join(__dirname, 'src', 'room', 'index.ts'),
   },
   output: {
     path: path.resolve(__dirname, 'build'),

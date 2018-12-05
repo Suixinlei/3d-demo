@@ -26,17 +26,42 @@ const LeftTopContainer = styled.div`
   position: absolute;
   left: 0px;
   top: 50px;
-  width: 300px;
+  width: 600px;
 `;
 
 class Root extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      display: null,
+      displayData: [],
+    };
+  }
+
+
+  componentDidMount() {
+    window.changeDisplay = (id) => {
+      this.setState({
+        display: id,
+      });
+      fetch('http://dip.alibaba-inc.com/api/v2/services/schema/mock/70846').then(res => res.json()).then((data) => {
+        this.setState({
+          displayData: data,
+        });
+      })
+    }
+  }
+
   render() {
     return (
       <div>
         <LeftTopContainer>
-          <Wcontainer className="demos">
-            <Wline height="300" config={options} data={data}/>
-          </Wcontainer>
+          {
+            this.state.display &&
+            <Wcontainer className="demos">
+              <Wline height="300" config={options} data={this.state.displayData}/>
+            </Wcontainer>
+          }
         </LeftTopContainer>
       </div>
     );

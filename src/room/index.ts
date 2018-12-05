@@ -1,4 +1,5 @@
 import App from "./app";
+import './reactSetup';
 import './index.css';
 
 window.addEventListener('DOMContentLoaded', () => {

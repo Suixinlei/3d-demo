@@ -25,12 +25,12 @@ function createCabinet(scene, name, index): BABYLON.Mesh {
           cabinetOld.material.diffuseColor = new BABYLON.Color3(1, 1, 1);
       }
       center = cabinetBox.id;
-      cabinetBox.material.diffuseColor = new BABYLON.Color3(1, 0, 0);
-      window.changeDisplay(name);
+      cabinetMat.diffuseColor = new BABYLON.Color3(1, 0, 0);
+      (<any>window).changeDisplay(name);
     } else {
       center = null;
-      cabinetBox.material.diffuseColor = new BABYLON.Color3(1, 1, 1);
-      window.closeDisplay();
+      cabinetMat.diffuseColor = new BABYLON.Color3(1, 1, 1);
+      (<any>window).closeDisplay();
     }
   }));
 

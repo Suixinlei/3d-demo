@@ -18,7 +18,6 @@ class App {
   private _light: BABYLON.Light;
   private _assetsManager: BABYLON.AssetsManager;
 
-  private _center: string;
   public cabinetList: Array<cabinet> = new Array<cabinet>(100);
 
   constructor(canvasElement: string) {
@@ -101,19 +100,17 @@ class App {
       bar.animations.push(animationPosition);
       this._scene.beginAnimation(bar, 0, 100, false, 2.0);
 
-      bar.material = new BABYLON.StandardMaterial(cabinetItem.label + 'mat', this._scene);
-      bar.material.specularColor = new BABYLON.Color3(0, 0, 0);
-      if (cabinetItem.cpu === 0) {
-        bar.material.diffuseColor = new BABYLON.Color3(1, 1, 1);
-      }
+      const barMat = new BABYLON.StandardMaterial(cabinetItem.label + 'mat', this._scene);
+      bar.material = barMat;
+      barMat.specularColor = new BABYLON.Color3(0, 0, 0);
       if (cabinetItem.cpu <= 100 && cabinetItem.cpu > 70) {
-        bar.material.diffuseColor = new BABYLON.Color3.Red();
+        barMat.diffuseColor = BABYLON.Color3.Red();
       }
       if (cabinetItem.cpu <= 70 && cabinetItem.cpu > 40) {
-        bar.material.diffuseColor = new BABYLON.Color3.Yellow();
+        barMat.diffuseColor = BABYLON.Color3.Yellow();
       }
       if (cabinetItem.cpu >= 0 && cabinetItem.cpu <= 40) {
-        bar.material.diffuseColor = new BABYLON.Color3.Green();
+        barMat.diffuseColor = BABYLON.Color3.Green();
       }
     });
   };

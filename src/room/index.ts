@@ -3,14 +3,14 @@ import './reactSetup.jsx';
 import './index.css';
 
 window.addEventListener('DOMContentLoaded', () => {
-    const app = new App('renderCanvas');
+  const app = new App('renderCanvas');
 
-    app.createScene();
-    app.createAssetsManager();
-    app.doRender();
+  app.createScene();
+  app.createAssetsManager();
+  app.doRender();
 
-    app.createCabinets();
+  app.createCabinets();
 
-    window.createCpuHotMap = app.createCpuHotMap;
-    window.closeCpuHotMap = app.closeCpuHotMap;
+  (<any>window).createCpuHotMap = app.createCpuHotMap;
+  (<any>window).closeCpuHotMap = app.closeCpuHotMap;
 });

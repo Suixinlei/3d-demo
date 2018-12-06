@@ -25,7 +25,7 @@ class Earth {
         this._camera = new BABYLON.ArcRotateCamera('camera1', Math.PI, 0, 250, BABYLON.Vector3.Zero(), this._scene);
         this._camera.lowerBetaLimit = 0.1;
         this._camera.upperBetaLimit = Math.PI;
-        this._camera.setPosition(new BABYLON.Vector3(- 250, 0, 0));
+        this._camera.setPosition(new BABYLON.Vector3(- 300, 0, 0));
         this._camera.attachControl(this._canvas, false);
         this._camera.useAutoRotationBehavior = true;
         this._camera.autoRotationBehavior.idleRotationSpeed = 0.10;

@@ -1,9 +1,8 @@
 import * as BABYLON from 'babylonjs';
+
 import worldAxis from './utils/worldAxis';
 import {countries, points} from './globePoints';
-
-import * as convertLngLat from './utils/convertLngLat';
-import * as geoData from './utils/geo';
+import addPoint from './utils/addPoint';
 
 // Map properties for creation and rendering
 var props = {
@@ -46,12 +45,11 @@ function returnSphericalCoordinates(latitude, longitude) {
   var targetY = Math.sin(longitude / 180 * Math.PI) * props.globeRadius;
   var targetZ = Math.sin(latitude / 180 * Math.PI) * radius;
 
-  return {
-    x: - targetX,
-    y: targetY,
-    z: targetZ
-  };
+  return new BABYLON.Vector3(-targetX, targetY, targetZ);
+}
 
+function originalUpdateParticles(particle) {
+  return particle;
 }
 
 class Earth {
@@ -59,6 +57,7 @@ class Earth {
   private _engine: BABYLON.Engine;
   private _scene: BABYLON.Scene;
   private _camera: BABYLON.ArcRotateCamera;
+  private _ghostCamera: BABYLON.ArcRotateCamera;
   private _light: BABYLON.Light;
 
   private earthSPS: BABYLON.SolidParticleSystem;
@@ -77,15 +76,17 @@ class Earth {
 
   createScene(): void {
     this._scene = new BABYLON.Scene(this._engine);
-    this._scene.clearColor = new BABYLON.Color4(1, 1, 1, 1);
+    this._scene.clearColor = new BABYLON.Color4(0, 0, 0, 0.8);
 
     this._camera = new BABYLON.ArcRotateCamera('camera1', Math.PI, 0, 300, BABYLON.Vector3.Zero(), this._scene);
     this._camera.lowerBetaLimit = 0.1;
     this._camera.upperBetaLimit = Math.PI;
-    this._camera.setPosition(new BABYLON.Vector3(- 250, 0, 0));
+    this._camera.setPosition(new BABYLON.Vector3(- 300, 0, 0));
     this._camera.attachControl(this._canvas, false);
-    // this._camera.useAutoRotationBehavior = true;
-    // this._camera.autoRotationBehavior.idleRotationSpeed = 0.20;
+    this._camera.useAutoRotationBehavior = true;
+    this._camera.autoRotationBehavior.idleRotationSpeed = 0.20;
+
+    this._ghostCamera = new BABYLON.ArcRotateCamera('camera1', Math.PI, 0, 300, BABYLON.Vector3.Zero(), this._scene);
 
     this._light = new BABYLON.HemisphericLight('light', this._camera.position, this._scene);
     this._light.specular = new BABYLON.Color3(0, 0, 0);
@@ -93,17 +94,20 @@ class Earth {
     worldAxis(this._scene, 512);
 
     this.earthSPS = new BABYLON.SolidParticleSystem('SPS', this._scene);
-    this.earthSPS.billboard = true;
-    const earthPoint = BABYLON.MeshBuilder.CreateSphere('s', { diameter: 2, segments: 4 }, this._scene);
-    const earthPointMat = new BABYLON.StandardMaterial('s-mat', this._scene);
-    earthPointMat.diffuseColor = new BABYLON.Color3(1, 0, 0);
-    earthPoint.material = earthPointMat;
+
+    const earthPointMat = new BABYLON.StandardMaterial('mat1', this._scene);
+    earthPointMat.backFaceCulling = false;
+    const earthPointTexture = new BABYLON.Texture('/public/textures/flare2.png', this._scene);
+    earthPointTexture.hasAlpha = true;
+    earthPointMat.diffuseTexture = earthPointTexture;
+
+    const earthPoint = BABYLON.MeshBuilder.CreatePlane('p', { size: 2 }, this._scene);
     const result = [];
 
     this.earthSPS.addShape(earthPoint, points.length);
     this.earth = this.earthSPS.buildMesh();
-    this.earthSPS.computeParticleTexture = false;
-
+    this.earth.material = earthPointMat;
+    earthPoint.dispose();
 
     /// init
     this.earthSPS.updateParticle = (particle) => {
@@ -113,13 +117,12 @@ class Earth {
         latlng.y,
       );
       result.push(pointPosition);
-      particle.position = new BABYLON.Vector3(pointPosition.x, pointPosition.y, pointPosition.z);
-
-      particle.color = new BABYLON.Color4(1, 1, 1, 1);
 
       return particle;
     };
     // this.earthSPS.mesh.rotation = new BABYLON.Vector3(Math.PI, Math.PI / 2, 0);
+    this.earthSPS.billboard = true;
+    this.earthSPS.computeParticleRotation = false;
     this.earthSPS.setParticles();
     this.earthSPS.computeParticleColor = false;
 
@@ -166,35 +169,45 @@ class Earth {
       return particle;
     };
 
-    earthPoint.dispose();
-
-    const radius = 128;
-    const manager = new BABYLON.GUI.GUI3DManager(this._scene);
-
-    const name = 'china';
-    const xyz = returnSphericalCoordinates(countries[name].x, countries[name].y);
-    const vector = new BABYLON.Vector3(xyz.z, xyz.y, xyz.z);
-    const mesh = BABYLON.Mesh.CreateSphere(name, 16, 2, this._scene);
-    const meshMat = new BABYLON.StandardMaterial(name, this._scene);
-    meshMat.diffuseColor = new BABYLON.Color3(1, 1, 0);
-    mesh.material = meshMat;
-
-    const point = new BABYLON.GUI.MeshButton3D(mesh, `click ${name}`);
-    manager.addControl(point);
-    point.position = vector;
-
-    point.onPointerEnterObservable.add(() => {
-      meshMat.diffuseColor = new BABYLON.Color3(1, 0, 0);
+    addPoint(returnSphericalCoordinates(countries['pakistan'].x, countries['pakistan'].y), this._scene, this._camera, this._ghostCamera, (position) => {
+      this.lightEffect(position);
     });
-    point.onPointerOutObservable.add(() => {
-      meshMat.diffuseColor = new BABYLON.Color3(1, 1, 0);
+    addPoint(returnSphericalCoordinates(countries['india'].x, countries['india'].y), this._scene, this._camera, this._ghostCamera, (position) => {
+      this.lightEffect(position);
     });
-    point.onPointerUpObservable.add(() => {
-      // window.location.href = `/idc?name=${name}`;
-      this.lightEffect(vector);
+    addPoint(returnSphericalCoordinates(countries['nepal'].x, countries['nepal'].y), this._scene, this._camera, this._ghostCamera, (position) => {
+      this.lightEffect(position);
     });
-
-    console.log(BABYLON.Vector3.Distance(new BABYLON.Vector3(0, 0, 0), vector));
+    addPoint(returnSphericalCoordinates(countries['philippines'].x, countries['philippines'].y), this._scene, this._camera, this._ghostCamera, (position) => {
+      this.lightEffect(position);
+    });
+    addPoint(returnSphericalCoordinates(countries['hongkong'].x, countries['hongkong'].y), this._scene, this._camera, this._ghostCamera, (position) => {
+      this.lightEffect(position);
+    });
+    addPoint(returnSphericalCoordinates(countries['china'].x, countries['china'].y), this._scene, this._camera, this._ghostCamera, (position) => {
+      this.lightEffect(position);
+    });
+    addPoint(returnSphericalCoordinates(countries['srilanka'].x, countries['srilanka'].y), this._scene, this._camera, this._ghostCamera, (position) => {
+      this.lightEffect(position);
+    });
+    addPoint(returnSphericalCoordinates(countries['bangladesh'].x, countries['bangladesh'].y), this._scene, this._camera, this._ghostCamera, (position) => {
+      this.lightEffect(position);
+    });
+    addPoint(returnSphericalCoordinates(countries['thailand'].x, countries['thailand'].y), this._scene, this._camera, this._ghostCamera, (position) => {
+      this.lightEffect(position);
+    });
+    addPoint(returnSphericalCoordinates(countries['malaysia'].x, countries['malaysia'].y), this._scene, this._camera, this._ghostCamera, (position) => {
+      this.lightEffect(position);
+    });
+    addPoint(returnSphericalCoordinates(countries['singapore'].x, countries['singapore'].y), this._scene, this._camera, this._ghostCamera, (position) => {
+      this.lightEffect(position);
+    });
+    addPoint(returnSphericalCoordinates(countries['indonesia'].x, countries['indonesia'].y), this._scene, this._camera, this._ghostCamera, (position) => {
+      this.lightEffect(position);
+    });
+    addPoint(returnSphericalCoordinates(countries['vietnam'].x, countries['vietnam'].y), this._scene, this._camera, this._ghostCamera, (position) => {
+      this.lightEffect(position);
+    });
   }
 
   lightEffect(vector): void {
@@ -221,20 +234,22 @@ class Earth {
 
   doRender(): void {
     this._scene.registerAfterRender(() => {
-      // if (!this.globeReady) {
-      //   this.completeNumber = 0;
-      //   this.earthSPS.setParticles();
-      //   if (this.completeNumber === this.earthSPS.nbParticles) {
-      //     this.globeReady = true;
-      //   }
-      // }
-      if (this.lightEffectEnable) {
-        this.lightEffectAlpha += 5;
-        this.earthSPS.setParticles();
-        if (this.lightEffectAlpha > 256 + 30) {
-          this.lightEffectEnable = false;
+      if (!this.globeReady) {
+        this.completeNumber = 0;
+        if (this.completeNumber === this.earthSPS.nbParticles) {
+          this.globeReady = true;
+          this.earthSPS.updateParticle = originalUpdateParticles;
         }
       }
+      if (this.lightEffectEnable) {
+        this.lightEffectAlpha += 1;
+
+        if (this.lightEffectAlpha > 256 + 30) {
+          this.lightEffectEnable = false;
+          this.earthSPS.updateParticle = originalUpdateParticles;
+        }
+      }
+      this.earthSPS.setParticles();
     });
     this._engine.runRenderLoop(() => {
       this._scene.render();

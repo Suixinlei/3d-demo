@@ -22,7 +22,8 @@ var props = {
     // Transparent values of materials
     globe: 0.4,
     lines: 0.5
-  }
+  },
+  globeUpdateSpeed: 1,
 };
 
 function returnSphericalCoordinates(latitude, longitude) {
@@ -63,8 +64,8 @@ class Earth {
   private earthSPS: BABYLON.SolidParticleSystem;
   private earth: BABYLON.Mesh;
 
-  private completeNumber: number = 0;
-  private globeReady: boolean = false;
+  private globeReady: number = 0;
+  private globeReadyStatus: boolean = false;
 
   private lightEffectEnable: boolean = false;
   private lightEffectAlpha: number = 0;
@@ -127,48 +128,21 @@ class Earth {
     this.earthSPS.computeParticleColor = false;
 
     // animation
-    const updateSpeed = 1;
     this.earthSPS.updateParticle = (particle): BABYLON.SolidParticle => {
       const pointPosition = result[particle.idx];
-      let updateAble: Boolean = true;
-      if (Math.abs(pointPosition.x - particle.position.x) >= updateSpeed) {
-        if (pointPosition.x > 0) {
-          particle.position.x += updateSpeed;
-        } else {
-          particle.position.x -= updateSpeed;
-        }
-        updateAble = false;
-      } else {
-        particle.position.x = pointPosition.x
-      }
-      if (Math.abs(pointPosition.y - particle.position.y) >= updateSpeed) {
-        if (pointPosition.y > 0) {
-          particle.position.y += updateSpeed;
-        } else {
-          particle.position.y -= updateSpeed;
-        }
-        updateAble = false;
-      } else {
-        particle.position.y = pointPosition.y;
-      }
-      if (Math.abs(pointPosition.z - particle.position.z) >= updateSpeed) {
-        if (pointPosition.z > 0) {
-          particle.position.z += updateSpeed;
-        } else {
-          particle.position.z -= updateSpeed;
-        }
-        updateAble = false;
-      } else {
-        particle.position.z = pointPosition.z;
-      }
 
-      if (updateAble) {
-        this.completeNumber += 1;
+      const direction = pointPosition.subtract(particle.position);
+      const distance = direction.length();
+      if (distance > props.globeUpdateSpeed) {
+        particle.position = particle.position.add(direction.normalize().scale(props.globeUpdateSpeed));
+      } else {
+        particle.position = pointPosition;
       }
-
       return particle;
     };
+  }
 
+  addTargetIdc(): void {
     addPoint(returnSphericalCoordinates(countries['pakistan'].x, countries['pakistan'].y), this._scene, this._camera, this._ghostCamera, (position) => {
       this.lightEffect(position);
     });
@@ -234,11 +208,13 @@ class Earth {
 
   doRender(): void {
     this._scene.registerAfterRender(() => {
-      if (!this.globeReady) {
-        this.completeNumber = 0;
-        if (this.completeNumber === this.earthSPS.nbParticles) {
-          this.globeReady = true;
+      if (!this.globeReadyStatus) {
+        if (this.globeReady > props.globeRadius / props.globeUpdateSpeed) {
+          this.globeReadyStatus = true;
           this.earthSPS.updateParticle = originalUpdateParticles;
+          this.addTargetIdc();
+        } else {
+          this.globeReady += 1;
         }
       }
       if (this.lightEffectEnable) {

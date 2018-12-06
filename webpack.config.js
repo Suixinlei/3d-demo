@@ -8,6 +8,7 @@ module.exports = {
     globe: path.join(__dirname, 'src', 'globe', 'index.ts'),
     idc: path.join(__dirname, 'src', 'idc', 'index.ts'),
     room: path.join(__dirname, 'src', 'room', 'index.ts'),
+    animateGlobe: path.join(__dirname, 'src', 'animateGlobe', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, 'build'),

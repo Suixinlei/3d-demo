@@ -26,6 +26,9 @@
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "styled-components": "^4.1.1",
+    "three": "^0.99.0",
+    "three-orbitcontrols": "^2.96.3",
+    "three.meshline": "^1.1.0",
     "uuid": "^3.3.2"
   },
   "devDependencies": {

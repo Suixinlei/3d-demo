@@ -1,5 +1,5 @@
 import App from "./app";
-import './reactSetup';
+import './reactSetup.jsx';
 import './index.css';
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -8,4 +8,9 @@ window.addEventListener('DOMContentLoaded', () => {
     app.createScene();
     app.createAssetsManager();
     app.doRender();
+
+    app.createCabinets();
+
+    window.createCpuHotMap = app.createCpuHotMap;
+    window.closeCpuHotMap = app.closeCpuHotMap;
 });

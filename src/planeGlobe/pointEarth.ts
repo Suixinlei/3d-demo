@@ -113,18 +113,12 @@ class Earth {
   private _engine: BABYLON.Engine;
   private _scene: BABYLON.Scene;
   private _camera: BABYLON.FreeCamera;
-  private _ghostCamera: BABYLON.ArcRotateCamera;
   private _light: BABYLON.Light;
 
   private earthSPS: BABYLON.SolidParticleSystem;
   private earth: BABYLON.Mesh;
-  private earthInnerMask: BABYLON.Mesh;
 
-  private globeReady: number = 0;
-  private globeReadyStatus: boolean = false;
-
-  private lightEffectEnable: boolean = false;
-  private lightEffectAlpha: number = 0;
+  private impact: BABYLON.Mesh;
 
   constructor(canvasElement: string) {
     this._canvas = document.getElementById(canvasElement) as HTMLCanvasElement;
@@ -133,133 +127,59 @@ class Earth {
 
   createScene(): void {
     this._scene = new BABYLON.Scene(this._engine);
-    this._scene.clearColor = props.sceneClearColor;
+    // this._scene.clearColor = props.sceneClearColor;
 
-    this._camera = new BABYLON.ArcRotateCamera('camera1', Math.PI, 0, 300, BABYLON.Vector3.Zero(), this._scene);
-    this._camera.lowerBetaLimit = 0.1;
-    this._camera.upperBetaLimit = Math.PI;
-    this._camera.lowerRadiusLimit = 150;
-    // this._camera.rotation.z = Math.PI;
-    // this._camera.upperRadiusLimit = 400;
-    // this._camera.setPosition(new BABYLON.Vector3(- 300, 0, 0));
+    this._camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(1000, 500, 800), this._scene);
+    this._camera.rotation = new BABYLON.Vector3(0, - Math.PI, 0);
     this._camera.attachControl(this._canvas, false);
-
-    // this._camera.useAutoRotationBehavior = true;
-    // this._camera.autoRotationBehavior.idleRotationSpeed = 0.20;
-
-    this._ghostCamera = new BABYLON.ArcRotateCamera('camera1', Math.PI, 0, 300, BABYLON.Vector3.Zero(), this._scene);
+    // this._camera.cameraDirection = new BABYLON.Vector3(0, 0, 0);
 
     this._light = new BABYLON.HemisphericLight('light', this._camera.position, this._scene);
     this._light.specular = new BABYLON.Color3(0, 0, 0);
 
+    var pl = new BABYLON.PointLight("pl", new BABYLON.Vector3(0, 0, 0), this._scene);
+    pl.diffuse = new BABYLON.Color3(1, 1, 1);
+    pl.intensity = 1.0;
+
     worldAxis(this._scene, 512);
 
-    this.earthSPS = new BABYLON.SolidParticleSystem('SPS', this._scene);
-
-    const earthPointMat = new BABYLON.StandardMaterial('mat1', this._scene);
-    earthPointMat.backFaceCulling = false;
-    const earthPointTexture = new BABYLON.Texture('/public/textures/flare2.png', this._scene);
-    earthPointTexture.hasAlpha = true;
-    earthPointMat.diffuseTexture = earthPointTexture;
-
-    const earthPoint = BABYLON.MeshBuilder.CreatePlane('p', { size: 2 }, this._scene);
-    const result = [];
-
-    this.earthSPS.addShape(earthPoint, points.length);
+    var fact = 100; 			// cube size
+    this.earthSPS = new BABYLON.SolidParticleSystem('SPS', this._scene, { updatable: false });
+    const earthPoint = BABYLON.MeshBuilder.CreateSphere('p', { diameter: 2, segments: 4, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, this._scene);
+    this.earthSPS.addShape(earthPoint, points.length, {
+      positionFunction: (particle, i, s) => {
+        const latlng = points[i];
+        particle.position = new BABYLON.Vector3(latlng.x, latlng.y, 0);
+        particle.color = new BABYLON.Color4(particle.position.x / fact + 0.5, particle.position.y / fact + 0.5, particle.position.z / fact + 0.5, 1.0);
+        return particle;
+      }
+    });
     this.earth = this.earthSPS.buildMesh();
-    this.earth.material = earthPointMat;
     earthPoint.dispose();
 
-    /// init
-    this.earthSPS.updateParticle = (particle) => {
-      const latlng = points[particle.idx];
-      particle.color = new BABYLON.Color4(1, 1, 1, 1);
-      particle.position = new BABYLON.Vector3(latlng.x, latlng.y, 0);
+    const earthGround = BABYLON.MeshBuilder.CreatePlane('earthPlane', { width: 2000, height: 2000, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, this._scene);
+    earthGround.position = new BABYLON.Vector3(1000, 1000, -5);
 
-      return particle;
-    };
-    this.earthSPS.billboard = true;
-    this.earthSPS.computeParticleRotation = false;
-    this.earthSPS.setParticles();
-    this.earthSPS.computeParticleColor = false;
-  }
+    this.impact = BABYLON.MeshBuilder.CreatePlane("impact", { size: 10, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, this._scene);
+    const impactMat = new BABYLON.StandardMaterial("impactMat", this._scene)
+    impactMat.diffuseTexture = new BABYLON.Texture("/public/textures/impact.png", this._scene);
+    impactMat.diffuseTexture.hasAlpha = true;
+    this.impact.material = impactMat;
+    this.impact.position = new BABYLON.Vector3(0, 0, 0.1);
 
-  addLines(): void {
-    const countryNames = Object.keys(countries);
-    for (var countryStart of countryNames) {
-      for (var countryEnd of countryNames) {
-        // Skip if the country is the same
-        if (countryStart === countryEnd) {
-          continue;
-        }
-
-        // Get the spatial coordinates
-        var result = returnCurveCoordinates(
-          countries[countryStart].x,
-          countries[countryStart].y,
-          countries[countryEnd].x,
-          countries[countryEnd].y
-        );
-
-        // Calcualte the curve in order to get points from
-        const curve = BABYLON.Curve3.CreateQuadraticBezier(
-          new BABYLON.Vector3(result.start.x, result.start.y, result.start.z),
-          new BABYLON.Vector3(result.mid.x, result.mid.y, result.mid.z),
-          new BABYLON.Vector3(result.end.x, result.end.y, result.end.z),
-          200
-        );
-
-        // Create mesh line using plugin and set its geometry
-        const line = BABYLON.MeshBuilder.CreateLines(`${countryStart} + ${countryEnd}`, { points: curve.getPoints() }, this._scene)
-        line.parent = this.earthInnerMask;
-      }
-    }
-  }
-
-  lightEffect(vector): void {
-    this.earthSPS.computeParticleRotation = false;
-    this.earthSPS.computeParticleVertex = false;
-    this.earthSPS.computeParticleTexture = false;
-    this.earthSPS.computeParticleColor = true;
-    const distance: Array<number> = [];
-    this.earthSPS.updateParticle = (particle) => {
-      if (!distance[particle.idx]) {
-        distance[particle.idx] = BABYLON.Vector3.Distance(particle.position, vector);
-      }
-      if (distance[particle.idx] < this.lightEffectAlpha && distance[particle.idx] > this.lightEffectAlpha - 30) {
-        particle.color = new BABYLON.Color4(1, 0, 0, 1);
-
-      } else {
-        particle.color = new BABYLON.Color4(1, 1, 1, 1);
-      }
-      return particle;
-    };
-
-    this.lightEffectAlpha = 0;
-    this.lightEffectEnable = true;
   }
 
   doRender(): void {
+    this._scene.onPointerDown = (evt, pickResult) => {
+      if (pickResult.hit) {
+        this.impact.position.x = pickResult.pickedPoint.x;
+        this.impact.position.y = pickResult.pickedPoint.y;
+        console.log(`{ "x": ${Math.floor(this.impact.position.x)}, "y": ${Math.floor(this.impact.position.y)}, "name": "233"}`);
+      }
+    };
     this._scene.registerAfterRender(() => {
-      // if (!this.globeReadyStatus) {
-      //   if (this.globeReady > props.globeRadius / props.globeUpdateSpeed) {
-      //     this.globeReadyStatus = true;
-      //     this.earthSPS.updateParticle = originalUpdateParticles;
-      //     this.addTargetIdc();
-      //   } else {
-      //     this.globeReady += 1;
-      //   }
-      // }
-      // if (this.lightEffectEnable) {
-      //   this.lightEffectAlpha += 1;
-      //
-      //   if (this.lightEffectAlpha > 256 + 30) {
-      //     this.lightEffectEnable = false;
-      //     this.earthSPS.updateParticle = originalUpdateParticles;
-      //   }
-      // }
-      this._camera.rotation.x += 0.1;
-      this.earthSPS.setParticles();
+      // console.log(this._camera.rotation);
+      // this.earthSPS.setParticles();
     });
     this._engine.runRenderLoop(() => {
       this._scene.render();

@@ -3827,6 +3827,8 @@ module.exports = {
     "china": {"x": 750, "y": 234, "name": "TNG \u94b1\u5305", "country": "China"},
     "hongkong": {"x": 768, "y": 342, "name": "TNG Wallet", "country": "Hong Kong"},
     "philippines": {"x": 813, "y": 387, "name": "PhiliPurse", "country": "Philippines"},
-    "north": { "x": 0, "y": 0, "name": "north" }
+    "north": { "x": 442, "y": 343, "name": "north" },
+    "panama": { "x": 1358, "y": 422, "name": "panama"},
+    "austria": { "x": 957, "y": 700, "name": "austria"}
   }
 }

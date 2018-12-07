@@ -24,6 +24,7 @@ var props = {
     lines: 0.5
   },
   globeUpdateSpeed: 1,
+  sceneClearColor: new BABYLON.Color4(0, 0, 0, 0.8),
 };
 
 function returnSphericalCoordinates(latitude, longitude) {
@@ -63,6 +64,7 @@ class Earth {
 
   private earthSPS: BABYLON.SolidParticleSystem;
   private earth: BABYLON.Mesh;
+  private earthInnerMask: BABYLON.Mesh;
 
   private globeReady: number = 0;
   private globeReadyStatus: boolean = false;
@@ -77,11 +79,13 @@ class Earth {
 
   createScene(): void {
     this._scene = new BABYLON.Scene(this._engine);
-    this._scene.clearColor = new BABYLON.Color4(0, 0, 0, 0.8);
+    this._scene.clearColor = props.sceneClearColor;
 
     this._camera = new BABYLON.ArcRotateCamera('camera1', Math.PI, 0, 300, BABYLON.Vector3.Zero(), this._scene);
     this._camera.lowerBetaLimit = 0.1;
     this._camera.upperBetaLimit = Math.PI;
+    this._camera.lowerRadiusLimit = 150;
+    this._camera.upperRadiusLimit = 400;
     this._camera.setPosition(new BABYLON.Vector3(- 300, 0, 0));
     this._camera.attachControl(this._canvas, false);
     this._camera.useAutoRotationBehavior = true;
@@ -118,10 +122,10 @@ class Earth {
         latlng.y,
       );
       result.push(pointPosition);
+      particle.color = new BABYLON.Color4(1, 1, 1, 1);
 
       return particle;
     };
-    // this.earthSPS.mesh.rotation = new BABYLON.Vector3(Math.PI, Math.PI / 2, 0);
     this.earthSPS.billboard = true;
     this.earthSPS.computeParticleRotation = false;
     this.earthSPS.setParticles();
@@ -161,6 +165,15 @@ class Earth {
   }
 
   addTargetIdc(): void {
+    /// init earthInner
+    this.earthInnerMask = BABYLON.MeshBuilder.CreateSphere('earthInner', { diameter: props.globeRadius * 2 - 1 }, this._scene);
+    this.earthInnerMask.parent = this.earth;
+    const earthInnerMaskMat = new BABYLON.StandardMaterial('earthInner', this._scene);
+    earthInnerMaskMat.diffuseColor = new BABYLON.Color3(0, 0, 0);
+    earthInnerMaskMat.alpha = 0.3;
+    this.earthInnerMask.material = earthInnerMaskMat;
+
+    /// add earth point
     addPoint(returnSphericalCoordinates(countries['pakistan'].x, countries['pakistan'].y), this._scene, this._camera, this._ghostCamera, (position) => {
       this.lightEffect(position);
     });

@@ -20,5 +20,8 @@ export default function addPoint(worldPosition, scene, camera, ghostCamera, clic
   mesh.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickUpTrigger, () => {
     arcAnimation(scene, camera, ghostCamera, mesh.position);
     clickCallback(worldPosition);
+    mesh.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnDoublePickTrigger, () => {
+      window.location.href = `/idc?name=张北`;
+    }));
   }));
 }

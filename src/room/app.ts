@@ -29,7 +29,7 @@ class App {
     this._scene = new BABYLON.Scene(this._engine);
 
     // camera
-    this._camera = new BABYLON.ArcRotateCamera('camera1', Math.PI / 2, Math.PI / 2, 150, BABYLON.Vector3.Zero(), this._scene);
+    this._camera = new BABYLON.ArcRotateCamera('camera1', 2.2174219301085647, 0.8584378292646299, 425, BABYLON.Vector3.Zero(), this._scene);
     this._camera.lowerBetaLimit = 0.1;
     this._camera.upperBetaLimit = (Math.PI / 2) * 0.9;
     this._camera.lowerRadiusLimit = 60;

@@ -112,7 +112,7 @@ class Earth {
   private _canvas: HTMLCanvasElement;
   private _engine: BABYLON.Engine;
   private _scene: BABYLON.Scene;
-  private _camera: BABYLON.ArcRotateCamera;
+  private _camera: BABYLON.FreeCamera;
   private _ghostCamera: BABYLON.ArcRotateCamera;
   private _light: BABYLON.Light;
 
@@ -139,11 +139,13 @@ class Earth {
     this._camera.lowerBetaLimit = 0.1;
     this._camera.upperBetaLimit = Math.PI;
     this._camera.lowerRadiusLimit = 150;
-    this._camera.upperRadiusLimit = 400;
-    this._camera.setPosition(new BABYLON.Vector3(- 300, 0, 0));
+    // this._camera.rotation.z = Math.PI;
+    // this._camera.upperRadiusLimit = 400;
+    // this._camera.setPosition(new BABYLON.Vector3(- 300, 0, 0));
     this._camera.attachControl(this._canvas, false);
-    this._camera.useAutoRotationBehavior = true;
-    this._camera.autoRotationBehavior.idleRotationSpeed = 0.20;
+
+    // this._camera.useAutoRotationBehavior = true;
+    // this._camera.autoRotationBehavior.idleRotationSpeed = 0.20;
 
     this._ghostCamera = new BABYLON.ArcRotateCamera('camera1', Math.PI, 0, 300, BABYLON.Vector3.Zero(), this._scene);
 
@@ -171,12 +173,8 @@ class Earth {
     /// init
     this.earthSPS.updateParticle = (particle) => {
       const latlng = points[particle.idx];
-      const pointPosition = returnSphericalCoordinates(
-        latlng.x,
-        latlng.y,
-      );
-      result.push(pointPosition);
       particle.color = new BABYLON.Color4(1, 1, 1, 1);
+      particle.position = new BABYLON.Vector3(latlng.x, latlng.y, 0);
 
       return particle;
     };
@@ -184,58 +182,6 @@ class Earth {
     this.earthSPS.computeParticleRotation = false;
     this.earthSPS.setParticles();
     this.earthSPS.computeParticleColor = false;
-
-    const earthAnimation = new BABYLON.Animation("earthAnimation", "rotation.y", 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT);
-    earthAnimation.setKeys([
-      {
-        frame: 0,
-        value: 0,
-      },
-      {
-        frame: props.globeRadius / 2,
-        value: -Math.PI,
-      },
-      {
-        frame: props.globeRadius,
-        value: -Math.PI * 2,
-      },
-    ]);
-    this.earth.animations.push(earthAnimation);
-    this._scene.beginAnimation(this.earth, 0, props.globeRadius, false, 1);
-
-    // animation
-    this.earthSPS.updateParticle = (particle): BABYLON.SolidParticle => {
-      const pointPosition = result[particle.idx];
-
-      const direction = pointPosition.subtract(particle.position);
-      const distance = direction.length();
-      if (distance > props.globeUpdateSpeed) {
-        particle.position = particle.position.add(direction.normalize().scale(props.globeUpdateSpeed));
-      } else {
-        particle.position = pointPosition;
-      }
-      return particle;
-    };
-  }
-
-  addTargetIdc(): void {
-    /// init earthInner
-    this.earthInnerMask = BABYLON.MeshBuilder.CreateSphere('earthInner', { diameter: props.globeRadius * 2 - 1 }, this._scene);
-    this.earthInnerMask.parent = this.earth;
-    const earthInnerMaskMat = new BABYLON.StandardMaterial('earthInner', this._scene);
-    earthInnerMaskMat.diffuseColor = new BABYLON.Color3(0, 0, 0);
-    earthInnerMaskMat.alpha = 0.3;
-    this.earthInnerMask.material = earthInnerMaskMat;
-
-    const countryNames = Object.keys(countries);
-    for (const countryName of countryNames) {
-      addPoint(returnSphericalCoordinates(countries[countryName].x, countries[countryName].y), this._scene, this._camera, this._ghostCamera, (position) => {
-        this.lightEffect(position);
-      });
-    }
-
-    // add line
-    this.addLines();
   }
 
   addLines(): void {
@@ -295,23 +241,24 @@ class Earth {
 
   doRender(): void {
     this._scene.registerAfterRender(() => {
-      if (!this.globeReadyStatus) {
-        if (this.globeReady > props.globeRadius / props.globeUpdateSpeed) {
-          this.globeReadyStatus = true;
-          this.earthSPS.updateParticle = originalUpdateParticles;
-          this.addTargetIdc();
-        } else {
-          this.globeReady += 1;
-        }
-      }
-      if (this.lightEffectEnable) {
-        this.lightEffectAlpha += 1;
-
-        if (this.lightEffectAlpha > 256 + 30) {
-          this.lightEffectEnable = false;
-          this.earthSPS.updateParticle = originalUpdateParticles;
-        }
-      }
+      // if (!this.globeReadyStatus) {
+      //   if (this.globeReady > props.globeRadius / props.globeUpdateSpeed) {
+      //     this.globeReadyStatus = true;
+      //     this.earthSPS.updateParticle = originalUpdateParticles;
+      //     this.addTargetIdc();
+      //   } else {
+      //     this.globeReady += 1;
+      //   }
+      // }
+      // if (this.lightEffectEnable) {
+      //   this.lightEffectAlpha += 1;
+      //
+      //   if (this.lightEffectAlpha > 256 + 30) {
+      //     this.lightEffectEnable = false;
+      //     this.earthSPS.updateParticle = originalUpdateParticles;
+      //   }
+      // }
+      this._camera.rotation.x += 0.1;
       this.earthSPS.setParticles();
     });
     this._engine.runRenderLoop(() => {

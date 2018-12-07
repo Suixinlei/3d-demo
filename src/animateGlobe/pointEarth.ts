@@ -127,6 +127,24 @@ class Earth {
     this.earthSPS.setParticles();
     this.earthSPS.computeParticleColor = false;
 
+    const earthAnimation = new BABYLON.Animation("earthAnimation", "rotation.y", 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT);
+    earthAnimation.setKeys([
+      {
+        frame: 0,
+        value: 0,
+      },
+      {
+        frame: props.globeRadius / 2,
+        value: -Math.PI,
+      },
+      {
+        frame: props.globeRadius,
+        value: -Math.PI * 2,
+      },
+    ]);
+    this.earth.animations.push(earthAnimation);
+    this._scene.beginAnimation(this.earth, 0, props.globeRadius, false, 1);
+
     // animation
     this.earthSPS.updateParticle = (particle): BABYLON.SolidParticle => {
       const pointPosition = result[particle.idx];
@@ -196,6 +214,7 @@ class Earth {
       }
       if (distance[particle.idx] < this.lightEffectAlpha && distance[particle.idx] > this.lightEffectAlpha - 30) {
         particle.color = new BABYLON.Color4(1, 0, 0, 1);
+
       } else {
         particle.color = new BABYLON.Color4(1, 1, 1, 1);
       }

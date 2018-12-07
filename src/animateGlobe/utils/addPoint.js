@@ -19,8 +19,6 @@ export default function addPoint(worldPosition, scene, camera, ghostCamera, clic
 
   mesh.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickUpTrigger, () => {
     arcAnimation(scene, camera, ghostCamera, mesh.position);
-    mesh.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnDoublePickTrigger, () => {
-      clickCallback(worldPosition);
-    }));
+    clickCallback(worldPosition);
   }));
 }

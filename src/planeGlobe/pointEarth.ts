@@ -101,7 +101,6 @@ function returnCurveCoordinates(latitudeA, longitudeA, latitudeB, longitudeB) {
       z: end.z
     }
   };
-
 }
 
 function originalUpdateParticles(particle) {

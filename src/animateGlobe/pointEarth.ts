@@ -3,106 +3,10 @@ import * as BABYLON from 'babylonjs';
 import worldAxis from './utils/worldAxis';
 import {countries, points} from './globePoints';
 import addPoint from './utils/addPoint';
+import addLine from './utils/addLine';
+import returnSphericalCoordinates from './utils/returnSphericalCoordinates';
+import props from './props';
 
-// Map properties for creation and rendering
-var props = {
-  mapSize: {
-    // Size of the map from the intial source image (on which the dots are positioned on)
-    width: 2048 / 2,
-    height: 1024 / 2
-  },
-  globeRadius: 128, // Radius of the globe (used for many calculations)
-  dotsAmount: 20, // Amount of dots to generate and animate randomly across the lines
-  startingCountry: 'hongkong', // The key of the country to rotate the camera to during the introduction animation (and which country to start the cycle at)
-  colours: {
-    // Cache the colours
-    globeDots: 'rgb(61, 137, 164)', // No need to use the Three constructor as this value is used for the HTML canvas drawing 'fillStyle' property
-  },
-  alphas: {
-    // Transparent values of materials
-    globe: 0.4,
-    lines: 0.5
-  },
-  globeUpdateSpeed: 1,
-  sceneClearColor: new BABYLON.Color4(0, 0, 0, 0.8),
-};
-
-function returnSphericalCoordinates(latitude, longitude) {
-
-  /*
-    This function will take a latitude and longitude and calcualte the
-    projected 3D coordiantes using Mercator projection relative to the
-    radius of the globe.
-
-    Reference: https://stackoverflow.com/a/12734509
-  */
-
-  // Convert latitude and longitude on the 90/180 degree axis
-  latitude = ((latitude - props.mapSize.width) / props.mapSize.width) * -180;
-  longitude = ((longitude - props.mapSize.height) / props.mapSize.height) * -90;
-
-  // Calculate the projected starting point
-  var radius = Math.cos(longitude / 180 * Math.PI) * props.globeRadius;
-  var targetX = Math.cos(latitude / 180 * Math.PI) * radius;
-  var targetY = Math.sin(longitude / 180 * Math.PI) * props.globeRadius;
-  var targetZ = Math.sin(latitude / 180 * Math.PI) * radius;
-
-  return new BABYLON.Vector3(-targetX, targetY, targetZ);
-}
-
-
-// Reference: https://codepen.io/ya7gisa0/pen/pisrm?editors=0010
-function returnCurveCoordinates(latitudeA, longitudeA, latitudeB, longitudeB) {
-
-  // Calculate the starting point
-  var start = returnSphericalCoordinates(latitudeA, longitudeA);
-
-  // Calculate the end point
-  var end = returnSphericalCoordinates(latitudeB, longitudeB);
-
-  // Calculate the mid-point
-  var midPointX = (start.x + end.x) / 2;
-  var midPointY = (start.y + end.y) / 2;
-  var midPointZ = (start.z + end.z) / 2;
-
-  // Calculate the distance between the two coordinates
-  var distance = Math.pow(end.x - start.x, 2);
-  distance += Math.pow(end.y - start.y, 2);
-  distance += Math.pow(end.z - start.z, 2);
-  distance = Math.sqrt(distance);
-
-  // Calculate the multiplication value
-  var multipleVal = Math.pow(midPointX, 2);
-  multipleVal += Math.pow(midPointY, 2);
-  multipleVal += Math.pow(midPointZ, 2);
-  multipleVal = Math.pow(distance, 2) / multipleVal;
-  multipleVal = multipleVal * 0.7;
-
-  // Apply the vector length to get new mid-points
-  var midX = midPointX + multipleVal * midPointX;
-  var midY = midPointY + multipleVal * midPointY;
-  var midZ = midPointZ + multipleVal * midPointZ;
-
-  // Return set of coordinates
-  return {
-    start: {
-      x: start.x,
-      y: start.y,
-      z: start.z
-    },
-    mid: {
-      x: midX,
-      y: midY,
-      z: midZ
-    },
-    end: {
-      x: end.x,
-      y: end.y,
-      z: end.z
-    }
-  };
-
-}
 
 function originalUpdateParticles(particle) {
   return particle;
@@ -185,6 +89,31 @@ class Earth {
     this.earthSPS.setParticles();
     this.earthSPS.computeParticleColor = false;
 
+    /// init earthInner
+    this.earthInnerMask = BABYLON.MeshBuilder.CreateSphere('earthInner', { diameter: 1 }, this._scene);
+    this.earthInnerMask.parent = this.earth;
+    const earthInnerMaskMat = new BABYLON.StandardMaterial('earthInner', this._scene);
+    earthInnerMaskMat.diffuseColor = new BABYLON.Color3(0, 0, 0);
+    this.earthInnerMask.material = earthInnerMaskMat;
+    /// earthInner animation
+    const earthInnerAnimation = new BABYLON.Animation('earthInnerAnimation', 'scaling', 60, BABYLON.Animation.ANIMATIONTYPE_VECTOR3);
+    earthInnerAnimation.setKeys([
+      {
+        frame: 0,
+        value: new BABYLON.Vector3(1, 1, 1),
+      },
+      {
+        frame: props.globeRadius / 2,
+        value: new BABYLON.Vector3(props.globeRadius - 10, props.globeRadius - 10, props.globeRadius - 10),
+      },
+      {
+        frame: props.globeRadius,
+        value: new BABYLON.Vector3(props.globeRadius * 2 - 10, props.globeRadius * 2 - 10, props.globeRadius * 2 - 10),
+      },
+    ]);
+    this.earthInnerMask.animations.push(earthInnerAnimation);
+    this._scene.beginAnimation(this.earthInnerMask, 0, props.globeRadius, false, 1);
+
     const earthAnimation = new BABYLON.Animation("earthAnimation", "rotation.y", 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT);
     earthAnimation.setKeys([
       {
@@ -219,14 +148,6 @@ class Earth {
   }
 
   addTargetIdc(): void {
-    /// init earthInner
-    this.earthInnerMask = BABYLON.MeshBuilder.CreateSphere('earthInner', { diameter: props.globeRadius * 2 - 1 }, this._scene);
-    this.earthInnerMask.parent = this.earth;
-    const earthInnerMaskMat = new BABYLON.StandardMaterial('earthInner', this._scene);
-    earthInnerMaskMat.diffuseColor = new BABYLON.Color3(0, 0, 0);
-    earthInnerMaskMat.alpha = 0.3;
-    this.earthInnerMask.material = earthInnerMaskMat;
-
     const countryNames = Object.keys(countries);
     for (const countryName of countryNames) {
       addPoint(returnSphericalCoordinates(countries[countryName].x, countries[countryName].y), this._scene, this._camera, this._ghostCamera, (position) => {
@@ -242,30 +163,7 @@ class Earth {
     const countryNames = Object.keys(countries);
     for (var countryStart of countryNames) {
       for (var countryEnd of countryNames) {
-        // Skip if the country is the same
-        if (countryStart === countryEnd) {
-          continue;
-        }
-
-        // Get the spatial coordinates
-        var result = returnCurveCoordinates(
-          countries[countryStart].x,
-          countries[countryStart].y,
-          countries[countryEnd].x,
-          countries[countryEnd].y
-        );
-
-        // Calcualte the curve in order to get points from
-        const curve = BABYLON.Curve3.CreateQuadraticBezier(
-          new BABYLON.Vector3(result.start.x, result.start.y, result.start.z),
-          new BABYLON.Vector3(result.mid.x, result.mid.y, result.mid.z),
-          new BABYLON.Vector3(result.end.x, result.end.y, result.end.z),
-          200
-        );
-
-        // Create mesh line using plugin and set its geometry
-        const line = BABYLON.MeshBuilder.CreateLines(`${countryStart} + ${countryEnd}`, { points: curve.getPoints() }, this._scene)
-        line.parent = this.earthInnerMask;
+        addLine(this._scene, countryStart, countryEnd);
       }
     }
   }

@@ -63,6 +63,7 @@ class Earth {
     const earthPointTexture = new BABYLON.Texture('/public/textures/flare2.png', this._scene);
     earthPointTexture.hasAlpha = true;
     earthPointMat.diffuseTexture = earthPointTexture;
+    earthPointMat.emissiveColor = new BABYLON.Color3(1, 1, 1);
 
     const earthPoint = BABYLON.MeshBuilder.CreatePlane('p', { size: 2 }, this._scene);
     const result = [];
@@ -93,6 +94,7 @@ class Earth {
     this.earthInnerMask = BABYLON.MeshBuilder.CreateSphere('earthInner', { diameter: 1 }, this._scene);
     this.earthInnerMask.parent = this.earth;
     const earthInnerMaskMat = new BABYLON.StandardMaterial('earthInner', this._scene);
+    earthInnerMaskMat.alpha = 0.8;
     earthInnerMaskMat.diffuseColor = new BABYLON.Color3(0, 0, 0);
     this.earthInnerMask.material = earthInnerMaskMat;
     /// earthInner animation
@@ -161,10 +163,13 @@ class Earth {
 
   addLines(): void {
     const countryNames = Object.keys(countries);
-    for (var countryStart of countryNames) {
-      for (var countryEnd of countryNames) {
-        addLine(this._scene, countryStart, countryEnd);
-      }
+    addLine(this._scene, 'hangzhou', 'shanghai');
+    addLine(this._scene, 'beijing', 'shanghai');
+    addLine(this._scene, 'beijing', 'hangzhou');
+    addLine(this._scene, 'hangzhou', 'hongkong');
+
+    for (const countryStart of countryNames) {
+      addLine(this._scene, 'hangzhou', countryStart);
     }
   }
 
@@ -212,6 +217,14 @@ class Earth {
       }
       this.earthSPS.setParticles();
     });
+
+
+    this._scene.onPointerDown = (event, pickResult) => {
+      if (pickResult.hit && pickResult.pickedMesh instanceof BABYLON.LinesMesh) {
+        pickResult.pickedMesh.edgesColor = new BABYLON.Color4(1, 0, 0, 1);
+      }
+    };
+
     this._engine.runRenderLoop(() => {
       this._scene.render();
     });

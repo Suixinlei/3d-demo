@@ -20,5 +20,5 @@ export default {
     lines: 0.5
   },
   globeUpdateSpeed: 1,
-  sceneClearColor: new BABYLON.Color4(0, 0, 0, 0.8),
+  sceneClearColor: new BABYLON.Color4(0, 0, 0, 1),
 };

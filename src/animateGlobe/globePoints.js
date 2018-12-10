@@ -3814,6 +3814,11 @@ module.exports = {
     "y": 621
   }, {"x": 120, "y": 405}, {"x": 237, "y": 44}, {"x": 1450, "y": 439}],
   "countries": {
+    "beijing": {"x": 750, "y": 234, "name": "beijing", "country": "China"},
+    "shanghai": {"x": 785, "y": 277, "name": "shanghai", "country": "China"},
+    "hangzhou": {"x": 768, "y": 281, "name": "hangzhou", "country": "China"},
+    "hongkong": {"x": 768, "y": 342, "name": "TNG Wallet", "country": "China"},
+
     "pakistan": {"x": 525, "y": 279, "name": "WalletPAK", "country": "Pakistan"},
     "india": {"x": 561, "y": 378, "name": "Asan Wallet", "country": "India"},
     "srilanka": {"x": 579, "y": 441, "name": "Sinha Wallet", "country": "Sri Lanka"},
@@ -3824,8 +3829,6 @@ module.exports = {
     "singapore": {"x": 714, "y": 468, "name": "Xin Wallet", "country": "Singapore"},
     "indonesia": {"x": 750, "y": 531, "name": "INDompet Wallet", "country": "Indonesia"},
     "vietnam": {"x": 723, "y": 369, "name": "Vina Wallet", "country": "Vietnam"},
-    "china": {"x": 750, "y": 234, "name": "TNG \u94b1\u5305", "country": "China"},
-    "hongkong": {"x": 768, "y": 342, "name": "TNG Wallet", "country": "Hong Kong"},
     "philippines": {"x": 813, "y": 387, "name": "PhiliPurse", "country": "Philippines"},
     "north": { "x": 442, "y": 343, "name": "north" },
     "panama": { "x": 1358, "y": 422, "name": "panama"},

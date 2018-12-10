@@ -3819,6 +3819,9 @@ module.exports = {
     "hangzhou": {"x": 768, "y": 281, "name": "hangzhou", "country": "China"},
     "hongkong": {"x": 768, "y": 342, "name": "TNG Wallet", "country": "China"},
 
+    "californica": { "x": 1186, "y": 256, "name": "californica", "country": "US"},
+    "Washonton": { "x": 1420, "y": 243, "name": "Washonton"},
+    "london": { "x": 101, "y": 144, "name": "london", "country": "england"},
     "pakistan": {"x": 525, "y": 279, "name": "WalletPAK", "country": "Pakistan"},
     "india": {"x": 561, "y": 378, "name": "Asan Wallet", "country": "India"},
     "srilanka": {"x": 579, "y": 441, "name": "Sinha Wallet", "country": "Sri Lanka"},

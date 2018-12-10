@@ -60,13 +60,15 @@ class App {
   createCabinets(): void {
     fetch('http://dip.alibaba-inc.com/api/v2/services/schema/mock/93826').then(res => res.json()).then((data) => {
       data.forEach((dataItem, index) => {
-        const newCabinet = createCabinet(this._scene, dataItem.label, index);
-        this.cabinetList[index] = {
-          label: dataItem.label,
-          cpu: dataItem.cpu,
-          origin: newCabinet,
-          cpuHot: null,
-        };
+        if (index < 339) {
+          const newCabinet = createCabinet(this._scene, dataItem.label, index, this._camera);
+          this.cabinetList[index] = {
+            label: dataItem.label,
+            cpu: dataItem.cpu,
+            origin: newCabinet,
+            cpuHot: null,
+          };
+        }
       })
     });
   }

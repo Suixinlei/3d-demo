@@ -133,6 +133,21 @@ class Root extends React.Component {
               <StatusRow>
                 告警数: <span>0</span>
               </StatusRow>
+              <StatusRow>
+                机柜数: <span>130</span>
+              </StatusRow>
+              <StatusRow>
+                机器数: <span>3474</span>
+              </StatusRow>
+              <StatusRow>
+                网络设备数: <span>3500</span>
+              </StatusRow>
+              <StatusRow>
+                平均温度: <span>24摄氏度</span>
+              </StatusRow>
+              <StatusRow>
+                平均湿度: <span>50%</span>
+              </StatusRow>
               <Wcontainer title={`${parsedQuery.name} 机房温度`} height={298}>
                 <Wline config={options} data={this.state.displayData[0]}/>
               </Wcontainer>

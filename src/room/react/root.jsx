@@ -60,6 +60,7 @@ class Root extends React.Component {
     super(props);
     this.state = {
       displayId: null,
+      displayAir: null,
       displayData: [],
 
       hotMapVisible: false,
@@ -90,6 +91,16 @@ class Root extends React.Component {
       fetch('http://dip.alibaba-inc.com/api/v2/services/schema/mock/93855').then(res => res.json()).then((data) => {
         this.setState({
           displayId: id,
+          displayAir: null,
+          displayData: data,
+        });
+      })
+    };
+    window.displayAir = (id) => {
+      fetch('http://dip.alibaba-inc.com/api/v2/services/schema/mock/93855').then(res => res.json()).then((data) => {
+        this.setState({
+          displayId: null,
+          displayAir: id,
           displayData: data,
         });
       })
@@ -98,13 +109,13 @@ class Root extends React.Component {
     window.closeDisplay = () => {
       this.setState({
         displayId: null,
-        displayData: [],
+        displayAir: null,
       });
     }
   }
 
   render() {
-    const { displayId, hotMapVisible } = this.state;
+    const { displayId, displayAir, hotMapVisible } = this.state;
     return (
       <PageContainer>
         <CabinetTitle>{parsedQuery.name}</CabinetTitle>
@@ -114,18 +125,25 @@ class Root extends React.Component {
             <RowButton onClick={this.openHotMap}>CPU热力图</RowButton>
         }
         {
-          displayId ?
-            <ServerRackDetail>
-              <Wcontainer title={`${displayId} CPU趋势`} height={298}>
-                <Wline config={options} data={this.state.displayData[0]}/>
-              </Wcontainer>
-              <Wcontainer title={`${displayId} 温度趋势`} height={298}>
-                <Wline config={options} data={this.state.displayData[1]}/>
-              </Wcontainer>
-              <Wcontainer title={`${displayId} 湿度趋势`} height={298}>
-                <Wline config={options} data={this.state.displayData[1]}/>
-              </Wcontainer>
-            </ServerRackDetail> :
+          (displayId || displayAir) ?
+            displayAir ?
+              <ServerRackDetail>
+                <Wcontainer title={`${displayAir} 温度趋势`} height={298}>
+                  <Wline config={options} data={this.state.displayData[1]}/>
+                </Wcontainer>
+              </ServerRackDetail> :
+              <ServerRackDetail>
+                <Wcontainer title={`${displayId} CPU趋势`} height={298}>
+                  <Wline config={options} data={this.state.displayData[0]}/>
+                </Wcontainer>
+                <Wcontainer title={`${displayId} 温度趋势`} height={298}>
+                  <Wline config={options} data={this.state.displayData[1]}/>
+                </Wcontainer>
+                <Wcontainer title={`${displayId} 湿度趋势`} height={298}>
+                  <Wline config={options} data={this.state.displayData[1]}/>
+                </Wcontainer>
+              </ServerRackDetail>
+            :
             <RoomDetail>
               <StatusRow>
                 市电状态: <span>正常</span>

@@ -6,7 +6,6 @@ window.addEventListener('DOMContentLoaded', () => {
   const app = new App('renderCanvas');
 
   app.createScene();
-  app.createAssetsManager();
   app.doRender();
 
   app.createCabinets();

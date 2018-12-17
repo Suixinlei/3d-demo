@@ -18,7 +18,8 @@
     "declaration": true,
     "types": [
       "babylonjs",
-      "babylonjs-gui"
+      "babylonjs-gui",
+      "node"
     ]
   },
   "include": [

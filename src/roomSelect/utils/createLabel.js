@@ -1,6 +1,6 @@
 function createLabel(scene, name, position, clickCallback) {
   const labelWidth = 40;
-  const labelHeight = 20;
+  const labelHeight = 10;
   const label = BABYLON.MeshBuilder.CreatePlane(name, { width: labelWidth, height: labelHeight, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
   label.position = position.clone();
 

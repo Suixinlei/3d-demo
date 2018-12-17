@@ -7,6 +7,7 @@ module.exports = {
   entry: {
     globe: path.join(__dirname, 'src', 'globe', 'index.ts'),
     idc: path.join(__dirname, 'src', 'idc', 'index.ts'),
+    roomSelect: path.join(__dirname, 'src', 'roomSelect', 'index.ts'),
     room: path.join(__dirname, 'src', 'room', 'index.ts'),
     animateGlobe: path.join(__dirname, 'src', 'animateGlobe', 'index.ts'),
     planeGlobe: path.join(__dirname, 'src', 'planeGlobe', 'index.ts'),
@@ -53,7 +54,10 @@ module.exports = {
   externals: {
     babylonjs: 'BABYLON',
     oimo: 'OIMO', //or true
-    cannon: 'CANNON' //or true
+    cannon: 'CANNON', //or true,
+    react: 'React',
+    'react-dom': 'ReactDOM',
+    '@alife/aisc-widgets': 'AiscWidgets',
   },
   plugins: [
     new MiniCssExtractPlugin({

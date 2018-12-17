@@ -29,17 +29,28 @@ class App {
     this._scene = new BABYLON.Scene(this._engine);
 
     // camera
-    this._camera = new BABYLON.ArcRotateCamera('camera1', 2.2174219301085647, 0.8584378292646299, 425, BABYLON.Vector3.Zero(), this._scene);
+    this._camera = new BABYLON.ArcRotateCamera('camera1', 2.2174219301085647, 0.8584378292646299, 550, BABYLON.Vector3.Zero(), this._scene);
     this._camera.lowerBetaLimit = 0.1;
     this._camera.upperBetaLimit = (Math.PI / 2) * 0.9;
-    this._camera.lowerRadiusLimit = 60;
-    this._camera.upperRadiusLimit = 500;
+    this._camera.lowerRadiusLimit = 100;
+    this._camera.upperRadiusLimit = 1000;
     this._camera.attachControl(this._canvas, false);
 
     // light
     this._light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0, 100, 0), this._scene);
 
-    worldAxis(this._scene, 512);
+    // ground
+    const ground = BABYLON.MeshBuilder.CreateGround('ground', { width: 600, height: 600 }, this._scene);
+    ground.position = new BABYLON.Vector3(50, 0, 0);
+    const groundMat = new BABYLON.StandardMaterial('mat1', this._scene);
+    // groundMat.diffuseColor = new BABYLON.Color3(0.502, 0.502, 0.502);
+    groundMat.diffuseColor = BABYLON.Color3.White();
+    groundMat.alpha = 0.8;
+    ground.material = groundMat;
+
+    if (process.env.NODE_ENV === 'development') {
+      worldAxis(this._scene, 512);
+    }
   }
 
   createAssetsManager(): void {

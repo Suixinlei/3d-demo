@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import queryString from 'query-string';
 
 import { Wcontainer, Wline } from '@alife/aisc-widgets';
+import '@alife/aisc-widgets/build/index.css';
 
 const parsedQuery = queryString.parse(location.search);
 
@@ -66,20 +67,7 @@ class Root extends React.Component {
   };
 
   jumpHref = (level) => {
-    let name = '';
-    if (this.state.name === '机房A栋') {
-      name = 'A';
-    }
-    if (this.state.name === '机房B栋') {
-      name = 'B';
-    }
-    if (this.state.name === '机房C栋') {
-      name = 'C';
-    }
-    if (this.state.name === '机房D栋') {
-      name = 'D';
-    }
-    window.location.href = `/room/select?name=${parsedQuery.name}&building=${name}&level=${level}`;
+    window.location.href = `/room?name=${parsedQuery.name}&idc=${this.state.name}&level=${level}`;
   };
 
   render() {

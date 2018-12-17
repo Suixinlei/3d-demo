@@ -26,11 +26,11 @@ class App {
         this._scene = new BABYLON.Scene(this._engine);
 
         // camera
-        this._camera = new BABYLON.ArcRotateCamera('camera1', 7.94165764085017, 0.6713277883003996, 300, BABYLON.Vector3.Zero(), this._scene);
+        this._camera = new BABYLON.ArcRotateCamera('camera1', 7.94165764085017, 0.6713277883003996, 500, BABYLON.Vector3.Zero(), this._scene);
         this._camera.lowerBetaLimit = 0.1;
         this._camera.upperBetaLimit = (Math.PI / 2) * 0.9;
-        this._camera.lowerRadiusLimit = 100;
-        this._camera.upperRadiusLimit = 500;
+        this._camera.lowerRadiusLimit = 300;
+        this._camera.upperRadiusLimit = 800;
         this._camera.attachControl(this._canvas, false);
 
         // light
@@ -56,18 +56,28 @@ class App {
         // 建立大背景
         const idcTask = this._assetsManager.addMeshTask('idc', '', '/public/resource/', '机房模型-1.obj');
         idcTask.onSuccess = (task) => {
-            const label1 = createLabel(this._scene, 'NA61-A', new BABYLON.Vector3(150, 50, -80), () => {
-                console.log('NA61-A');
-                (<any>window).changeDisplay('NA61-A栋');
+            const label1 = createLabel(this._scene, '机房A栋', new BABYLON.Vector3(150, 50, -80), () => {
+                (<any>window).changeDisplay('机房A栋');
+                this._camera.target = new BABYLON.Vector3(150, 0, -80);
             });
-            const label2 = createLabel(this._scene, 'NA61-B', new BABYLON.Vector3(150, 50, 0), () => {
-                console.log('NA61-B');
-                (<any>window).changeDisplay('NA61-B栋');
+            const label2 = createLabel(this._scene, '机房B栋', new BABYLON.Vector3(150, 50, 0), () => {
+                (<any>window).changeDisplay('机房B栋');
+                this._camera.target = new BABYLON.Vector3(150, 0, 0);
+            });
+            const label3 = createLabel(this._scene, '机房C栋', new BABYLON.Vector3(150, 50, 80), () => {
+                (<any>window).changeDisplay('机房C栋');
+                this._camera.target = new BABYLON.Vector3(150, 0, 80);
+            });
+            const label4 = createLabel(this._scene, '机房D栋', new BABYLON.Vector3(150, 50, 160), () => {
+                (<any>window).changeDisplay('机房D栋');
+                this._camera.target = new BABYLON.Vector3(150, 0, 160);
             });
             this._scene.registerAfterRender(() => {
                 if (label1 && label2) {
                     label1.lookAt(this._camera.position);
                     label2.lookAt(this._camera.position);
+                    label3.lookAt(this._camera.position);
+                    label4.lookAt(this._camera.position);
                 }
             });
             // task.loadedMeshes[1].position = new BABYLON.Vector3(0, 100, 0);

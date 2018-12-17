@@ -1,0 +1,22 @@
+html, body {
+    overflow: hidden;
+    width   : 100%;
+    height  : 100%;
+    margin  : 0;
+    padding : 0;
+}
+
+#renderCanvas {
+    width   : 100%;
+    height  : 100%;
+    touch-action: none;
+}
+
+#reactContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9zcmMvcm9vbVNlbGVjdC9pbmRleC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7O0FBRUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7QUFFQTtBQUNBO0FBQ0E7QUFDQTtBQUNBIiwiZmlsZSI6InJvb21TZWxlY3QuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiaHRtbCwgYm9keSB7XG4gICAgb3ZlcmZsb3c6IGhpZGRlbjtcbiAgICB3aWR0aCAgIDogMTAwJTtcbiAgICBoZWlnaHQgIDogMTAwJTtcbiAgICBtYXJnaW4gIDogMDtcbiAgICBwYWRkaW5nIDogMDtcbn1cblxuI3JlbmRlckNhbnZhcyB7XG4gICAgd2lkdGggICA6IDEwMCU7XG4gICAgaGVpZ2h0ICA6IDEwMCU7XG4gICAgdG91Y2gtYWN0aW9uOiBub25lO1xufVxuXG4jcmVhY3RDb250YWluZXIge1xuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICB0b3A6IDA7XG4gICAgbGVmdDogMDtcbn1cbiJdLCJzb3VyY2VSb290IjoiIn0=*/

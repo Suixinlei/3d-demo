@@ -152,7 +152,7 @@ class Earth {
   addTargetIdc(): void {
     const countryNames = Object.keys(countries);
     for (const countryName of countryNames) {
-      addPoint(returnSphericalCoordinates(countries[countryName].x, countries[countryName].y), this._scene, this._camera, this._ghostCamera, (position) => {
+      addPoint(returnSphericalCoordinates(countries[countryName].x, countries[countryName].y), countryName, this._scene, this._camera, this._ghostCamera, (position) => {
         this.lightEffect(position);
       });
     }

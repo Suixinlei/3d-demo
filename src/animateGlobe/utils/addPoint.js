@@ -1,7 +1,8 @@
 import * as BABYLON from 'babylonjs';
 import arcAnimation from './arcAnimation';
+import createLabel from './createLabel';
 
-export default function addPoint(worldPosition, scene, camera, ghostCamera, clickCallback) {
+export default function addPoint(worldPosition, name, scene, camera, ghostCamera, clickCallback) {
   const mesh = BABYLON.Mesh.CreateSphere(name, 16, 2, scene);
   mesh.position = worldPosition;
 
@@ -17,11 +18,16 @@ export default function addPoint(worldPosition, scene, camera, ghostCamera, clic
   mesh.actionManager.registerAction(new BABYLON.SetValueAction(BABYLON.ActionManager.OnPointerOverTrigger, meshMat, "emissiveColor", BABYLON.Color3.White()));
   mesh.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPointerOverTrigger, mesh, "scaling", new BABYLON.Vector3(1.1, 1.1, 1.1), 150));
 
-  mesh.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, () => {
+  const label = createLabel(scene, name, worldPosition.clone().scale(1.1), () => {
     arcAnimation(scene, camera, ghostCamera, mesh.position);
     clickCallback(worldPosition);
-    mesh.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnDoublePickTrigger, () => {
+    console.log('开始计时');
+    setInterval(() => {
       window.location.href = `/idc?name=张北`;
-    }));
-  }));
+    }, 3000);
+  });
+
+  scene.registerAfterRender(() => {
+    label.lookAt(camera.position);
+  })
 }

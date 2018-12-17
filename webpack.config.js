@@ -67,10 +67,11 @@ module.exports = {
       chunkFilename: '[id].css',
     }),
     new webpack.SourceMapDevToolPlugin({}),
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'development',
+      DEBUG: false
+    }),
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('development'),
-      },
       __DEV__: JSON.stringify('true'),
     }),
   ],

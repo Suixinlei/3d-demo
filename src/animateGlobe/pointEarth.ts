@@ -54,7 +54,9 @@ class Earth {
     this._light = new BABYLON.HemisphericLight('light', this._camera.position, this._scene);
     this._light.specular = new BABYLON.Color3(0, 0, 0);
 
-    worldAxis(this._scene, 512);
+    if (process.env.NODE_ENV === 'development') {
+      worldAxis(this._scene, 512);
+    }
 
     this.earthSPS = new BABYLON.SolidParticleSystem('SPS', this._scene);
 

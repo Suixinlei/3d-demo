@@ -79,8 +79,7 @@ void main( void ) {
 
 	vec2 ps = ( vPosition.xy / resolution.xy );
 	
-	vec2 p = vec2(cos(time*0.1)*ps.x+sin(time*0.1)*ps.y,-sin(time*0.1)*ps.x+cos(time*0.1)*ps.y);
-	
+	vec2 p = vec2(cos(time * 0.1) * ps.x + sin(time * 0.1) * ps.y, -sin(time*0.1) * ps.x + cos(time*0.1) * ps.y);
 	
 	float x = p.x * 0.3 + 3.5;
 	float y = p.y * 0.3 + sin(time) + time/ 2.0;
@@ -88,13 +87,13 @@ void main( void ) {
 	
 	float v0 = cos(sin(time/4.0)*x);
 	float v1 = sin(2.0*time)/8.0*v0*v0;
-	float e = v1+(1.7+cos(time)/4.0)*sin(y)*sin(y)-1.0;
+	float e = v1 + (1.7 + cos(time) / 4.0) * sin(y) * sin(y) - 1.0;
 	
-	float r = 1.0-ntsf(abs(e),cos(time*0.4)*0.9);
-	float g = 1.0-ntsf(abs(e),cos(time*0.5)*0.5);
-	float b = 1.0-ntsf(abs(e),cos(time*0.6)*0.3);
+	float r = 1.0 - ntsf(abs(e), cos(time * 0.4) * 0.3);
+	float g = 1.0 - ntsf(abs(e), cos(time * 0.5) * 0.5);
+	float b = 1.0 - ntsf(abs(e), cos(time * 0.6) * 0.9);
 		
-	gl_FragColor = vec4( vec3(r,g,b), 1.0 );
+	gl_FragColor = vec4(vec3(r,g,b), 1.0 );
 }
  `;
 BABYLON.Effect.ShadersStore["basicVertexShader"] = _vs;
@@ -159,9 +158,10 @@ export default function addLine(scene, countryStart, countryEnd) {
   const paths = [];
   for (var i = 0; i < ciclePoints.length; i++) {
     paths.push([
-      new BABYLON.Vector3(ciclePoints[i].x - 1, ciclePoints[i].y, ciclePoints[i].z),
+      new BABYLON.Vector3(ciclePoints[i].x - 0.5, ciclePoints[i].y - 0.5, ciclePoints[i].z),
       new BABYLON.Vector3(ciclePoints[i].x, ciclePoints[i].y, ciclePoints[i].z),
-      new BABYLON.Vector3(ciclePoints[i].x + 1, ciclePoints[i].y, ciclePoints[i].z),
+      new BABYLON.Vector3(ciclePoints[i].x + 0.5, ciclePoints[i].y - 0.5, ciclePoints[i].z),
+      new BABYLON.Vector3(ciclePoints[i].x - 0.5, ciclePoints[i].y - 0.5, ciclePoints[i].z),
     ]);
   }
 

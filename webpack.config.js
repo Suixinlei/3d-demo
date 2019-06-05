@@ -11,6 +11,7 @@ module.exports = {
     room: path.join(__dirname, 'src', 'room', 'index.ts'),
     animateGlobe: path.join(__dirname, 'src', 'animateGlobe', 'index.ts'),
     planeGlobe: path.join(__dirname, 'src', 'planeGlobe', 'index.ts'),
+    pointGlobe: path.join(__dirname, 'src', 'pointGlobe', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, 'build'),
@@ -48,6 +49,10 @@ module.exports = {
             loader: 'file-loader',
           }
         ]
+      },
+      {
+        test: /\.glsl$/,
+        use: ['shader-loader']
       }
     ]
   },
@@ -58,6 +63,7 @@ module.exports = {
     react: 'React',
     'react-dom': 'ReactDOM',
     '@alife/aisc-widgets': 'AiscWidgets',
+    three: 'THREE',
   },
   plugins: [
     new MiniCssExtractPlugin({

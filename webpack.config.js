@@ -64,6 +64,7 @@ module.exports = {
     'react-dom': 'ReactDOM',
     '@alife/aisc-widgets': 'AiscWidgets',
     three: 'THREE',
+    tween: 'TWEEN',
   },
   plugins: [
     new MiniCssExtractPlugin({

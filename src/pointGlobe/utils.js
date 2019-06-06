@@ -35,7 +35,24 @@ function returnSphericalCoordinates(latitude, longitude) {
   return new THREE.Vector3(-targetX, targetY, targetZ);
 }
 
+function returnSphericalCoordinates2(latitude, longitude) {
+  const targetRadius = props.globeRadius * 1.2;
+
+  // Convert latitude and longitude on the 90/180 degree axis
+  latitude = ((latitude - props.mapSize.width) / props.mapSize.width) * 180;
+  longitude = ((longitude - props.mapSize.height) / props.mapSize.height) * -90;
+
+  // Calculate the projected starting point
+  var radius = Math.cos(longitude / 180 * Math.PI) * targetRadius;
+  var targetX = Math.cos(latitude / 180 * Math.PI) * radius;
+  var targetY = Math.sin(longitude / 180 * Math.PI) * targetRadius;
+  var targetZ = Math.sin(latitude / 180 * Math.PI) * radius;
+
+  return new THREE.Vector3(-targetX, targetY, targetZ);
+}
+
 module.exports = {
   convertLngLat,
-  returnSphericalCoordinates
+  returnSphericalCoordinates,
+  returnSphericalCoordinates2
 };

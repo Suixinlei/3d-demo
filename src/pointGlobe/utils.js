@@ -1,13 +1,5 @@
 const THREE = require('three');
-
-const props = {
-  globeRadius: 256,
-  mapSize: {
-    // Size of the map from the intial source image (on which the dots are positioned on)
-    width: 2048 / 2,
-    height: 1024 / 2
-  },
-};
+const props = require('./props');
 
 function convertLngLat(dot) {
   var lat = dot.y;

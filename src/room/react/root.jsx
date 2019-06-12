@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import queryString from 'query-string';
 
 import { Wcontainer, Wline } from '@alife/aisc-widgets';
-import '@alife/aisc-widgets/build/index.css';
 
 const parsedQuery = queryString.parse(location.search);
 

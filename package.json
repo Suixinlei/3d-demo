@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@alife/aisc-widgets": "^2.3.2",
+    "@alife/aisc-widgets": "^2.4.6",
     "@types/babylon": "^6.16.4",
     "@types/node": "^10.12.15",
     "babylonjs": "^3.3.0",

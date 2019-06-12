@@ -60,9 +60,9 @@ module.exports = {
     babylonjs: 'BABYLON',
     oimo: 'OIMO', //or true
     cannon: 'CANNON', //or true,
-    react: 'React',
-    'react-dom': 'ReactDOM',
-    '@alife/aisc-widgets': 'AiscWidgets',
+    react: 'var React',
+    'react-dom': 'var ReactDOM',
+    '@alife/aisc-widgets': 'var AiscWidgets',
     three: 'THREE',
     tween: 'TWEEN',
   },

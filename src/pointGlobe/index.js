@@ -142,10 +142,14 @@ div.style.position = 'absolute';
 
 function render() {
   if (camera.position.distanceTo(beijing.position) < 700) {
-    const absolutePosition = toScreenPosition(beijing, camera);
-    div.style.left = absolutePosition.x + 'px';
-    div.style.top = absolutePosition.y + 'px';
-    div.style.display = 'block';
+    const absolutePosition = toScreenPosition(beijing, renderer, camera);
+    if (absolutePosition.y > 0 && absolutePosition.x > 0) {
+      div.style.left = absolutePosition.x + 'px';
+      div.style.top = absolutePosition.y + 'px';
+      div.style.display = 'block';
+    } else {
+      div.style.display = 'none';
+    }
   } else {
     div.style.display = 'none';
   }

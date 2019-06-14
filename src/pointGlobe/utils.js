@@ -42,11 +42,11 @@ function returnSphericalCoordinates2(latitude, longitude) {
   return new THREE.Vector3(-targetX, targetY, targetZ);
 }
 
-function toScreenPosition(obj, cameraInstance) {
+function toScreenPosition(obj, renderer, cameraInstance) {
     var vector = new THREE.Vector3();
 
-    var widthHalf = 0.5*renderer.context.canvas.width;
-    var heightHalf = 0.5*renderer.context.canvas.height;
+    var widthHalf = 0.5 * renderer.context.canvas.width;
+    var heightHalf = 0.5 * renderer.context.canvas.height;
 
     obj.updateMatrixWorld();
     vector.setFromMatrixPosition(obj.matrixWorld);

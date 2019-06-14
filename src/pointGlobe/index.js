@@ -5,20 +5,36 @@ const pointVertexShader = require('./glsl/points/vertexShader.glsl');
 const pointFragmentShader = require('./glsl/points/fragmentShader.glsl');
 
 const globePoints = require('./pointsGeo.json');
-const { returnSphericalCoordinates, returnSphericalCoordinates2 } = require('./utils');
+const { 
+  convertLngLat,
+  toScreenPosition,
+  returnSphericalCoordinates
+} = require('./utils');
 const props = require('./props');
 
 require('./index.css');
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 2000 );
 camera.position.z = props.initCameraDistance;
+const cameraHelper = new THREE.CameraHelper(camera);
 scene.add(camera);
+scene.add(cameraHelper);
+
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
+
+// 环境光
 const ambient = new THREE.AmbientLight( 0xffffff, 0.1 );
 scene.add( ambient );
+// 点状光源
+const pointLight = new THREE.PointLight( 0xff0000, 5, 1000);
+pointLight.position.set( 0, 0, 0 );
+scene.add( pointLight );
+var sphereSize = 5;
+var pointLightHelper = new THREE.PointLightHelper( pointLight, sphereSize );
+scene.add( pointLightHelper );
 
 var controls = new THREE.OrbitControls( camera, renderer.domElement );
 controls.addEventListener( 'change', render );
@@ -34,37 +50,29 @@ document.body.appendChild( stats.dom );
 
 // earth
 const earthGeometry = new THREE.SphereGeometry(props.innerGlobeRadius, 64, 64);
-const earthMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, envMap: scene.background });
+const earthMaterial = new THREE.MeshBasicMaterial({ color: 0x0c0000, envMap: scene.background });
 earthMaterial.transparent = false;
 const earth = new THREE.Mesh(earthGeometry, earthMaterial);
-scene.add(earth);
+// scene.add(earth);
 
 const vertices = [];
-const spreadVertices = [];
 // points
 globePoints.forEach((point) => {
   const vector = returnSphericalCoordinates(point.x, point.y);
-  const vector2 = returnSphericalCoordinates2(point.x, point.y);
   vertices.push(vector);
-  spreadVertices.push(vector2);
 });
 
 const verticesLength = vertices.length;
 
 const positions = new Float32Array( vertices.length * 3 );
-const spreadPositions = new Float32Array( spreadVertices.length * 3 );
 var colors = [];
 var sizes = new Float32Array( vertices.length );
 
 let vertex;
-let vertex2;
 var color = new THREE.Color();
 for ( var i = 0, l = verticesLength; i < l; i ++ ) {
   vertex = vertices[ i ];
   vertex.toArray( positions, i * 3 );
-
-  vertex2 = spreadVertices[ i ];
-  vertex2.toArray( spreadPositions, i * 3 );
 
   color.setHex(0x00ffff);
   colors.push(colors);
@@ -75,7 +83,6 @@ const geometry = new THREE.BufferGeometry();
 geometry.addAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
 geometry.addAttribute( 'size', new THREE.BufferAttribute( sizes, 1 ) );
 geometry.addAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
-
 
 const pointMaterial = new THREE.ShaderMaterial( {
   uniforms: {
@@ -92,7 +99,6 @@ const pointMaterial = new THREE.ShaderMaterial( {
 const spherePoints = new THREE.Points(geometry, pointMaterial);
 scene.add(spherePoints);
 
-const startPoint = new THREE.Vector3(props.globeRadius, 0, 0);
 const tween = new TWEEN.Tween({ x: 0 }).to({ x: 2 }, 3000);
 tween.easing(TWEEN.Easing.Sinusoidal.InOut);
 
@@ -102,26 +108,48 @@ tween.onUpdate(function () {
   if (x > 1) {
     x = 2 - x;
   }
-  console.log(x);
   const vertexs = new Float32Array( vertices.length * 3 )
   const positionArray = geometry.getAttribute('position').array;
   for (let i = 0; i < count; i++ ) {
-    
     const target = vertices[i].clone().lerp(spreadVertices[i], x);
     target.toArray(vertexs, i * 3);
-    if (i == 0) {
-      // console.log(target);
-      console.log(target.distanceTo(new THREE.Vector3(0, 0, 0)));
-    }
   }
   spherePoints.geometry.attributes.position.array = vertexs;
   spherePoints.geometry.attributes.position.needsUpdate = true;
 })
 
 tween.delay(2000);
-tween.start();
+// tween.start();
+
+// 增加北京点
+var beijingGeometry = new THREE.SphereGeometry( 5, 32, 32 );
+var beijingMaterial = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+var beijing = new THREE.Mesh( beijingGeometry, beijingMaterial );
+const beijingPosition =  convertLngLat({
+  x: 39.9042,
+  y: 116.4074
+});
+beijing.position.x = beijingPosition.x;
+beijing.position.y = beijingPosition.y;
+beijing.position.z = beijingPosition.z;
+scene.add( beijing );
+
+const div = document.createElement('div');
+div.innerHTML = '233';
+document.body.appendChild(div);
+div.style.color = 'white';
+div.style.position = 'absolute';
 
 function render() {
+  if (camera.position.distanceTo(beijing.position) < 700) {
+    const absolutePosition = toScreenPosition(beijing, camera);
+    div.style.left = absolutePosition.x + 'px';
+    div.style.top = absolutePosition.y + 'px';
+    div.style.display = 'block';
+  } else {
+    div.style.display = 'none';
+  }
+
   renderer.render( scene, camera );
 }
 

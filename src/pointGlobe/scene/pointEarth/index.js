@@ -40,7 +40,7 @@ function Init(scene) {
     color.setHex(0x00ffff);
     colors.push(colors);
     color.toArray( colors, i * 3 );
-    sizes[ i ] = 5;
+    sizes[ i ] = 6;
   }
   const geometry = new THREE.BufferGeometry();
   geometry.addAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );

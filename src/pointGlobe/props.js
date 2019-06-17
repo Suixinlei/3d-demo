@@ -4,8 +4,8 @@ const props = {
   innerGlobeRadius: 510,
   mapSize: {
     // Size of the map from the intial source image (on which the dots are positioned on)
-    width: 358 / 2,
-    height: 179 / 2
+    width: 448 / 2,
+    height: 225 / 2
   },
   mapBorderSize: {
     width: 746 / 2,

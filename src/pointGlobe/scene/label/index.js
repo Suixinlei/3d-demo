@@ -4,6 +4,7 @@ const {
   convertLngLat,
   toScreenPosition,
 } = require('../../utils');
+const props = require('../../props');
 
 class Label {
   constructor(data, scene) {
@@ -13,18 +14,18 @@ class Label {
   }
 
   init() {
-    const labelGeometry = new THREE.SphereGeometry( 2, 8, 8 );
+    const labelGeometry = new THREE.SphereGeometry( 2, 16, 16);
     const labelMaterial = new THREE.MeshBasicMaterial( {color: 0xffff00} );
     var label = new THREE.Mesh(labelGeometry, labelMaterial);
 
-    const labelPosition = convertLngLat(39.9042, 116.4074);
+    const labelPosition = convertLngLat(this.data.lat, this.data.lng);
     label.position.x = labelPosition.x;
     label.position.y = labelPosition.y;
     label.position.z = labelPosition.z;
     this.scene.add(label);
 
     const labelDiv = new htmlLabel({
-      text: '北京',
+      text: this.data.LocalName,
       style: {
         position: 'absolute',
         color: '#00ffff',
@@ -39,7 +40,7 @@ class Label {
   }
 
   render(camera, renderer) {
-    if (camera.position.distanceTo(this.instance.position) < 700) {
+    if (camera.position.distanceTo(this.instance.position) < (props.initCameraDistance - 100)) {
       const absolutePosition = toScreenPosition(this.instance, renderer, camera);
       if (absolutePosition.y > 0 && absolutePosition.x > 0) {
         this.div.set({

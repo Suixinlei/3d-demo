@@ -2,15 +2,12 @@ const THREE = require('three');
 const Stats = require('stats.js');
 const TWEEN = require('tween');
 
-const {
-  convertLngLat,
-  toScreenPosition,
-} = require('./utils');
-const props = require('./props');
-
 const pointEarth = require('./scene/pointEarth/index');
 const pointEarthBorder = require('./scene/pointEarthBorder');
 const Label = require('./scene/label/index');
+
+const props = require('./props');
+const regionData = require('./region');
 
 require('./index.css');
 
@@ -64,7 +61,7 @@ scene.add( axesHelper );
 
 // 内藏球体
 const earthGeometry = new THREE.SphereGeometry(props.innerGlobeRadius, 64, 64);
-const earthMaterial = new THREE.MeshBasicMaterial({ color: 0x0c0000, envMap: scene.background, opacity: 0.95 });
+const earthMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, opacity: 1 });
 earthMaterial.transparent = false;
 const earth = new THREE.Mesh(earthGeometry, earthMaterial);
 scene.add(earth);
@@ -72,16 +69,24 @@ scene.add(earth);
 pointEarth.Init(scene);
 pointEarthBorder.Init(scene);
 
-const beijing = new Label({}, scene);
+const regions = [];
+regionData.forEach((dataItem) => {
+  regions.push(
+    new Label(dataItem, scene),
+  );
+});
 
 
 function render() {
-  beijing.render(camera, renderer);
-
+  if (regions && Array.isArray(regions)) {
+    regions.forEach((region) => {
+      region.render(camera, renderer);
+    });
+  }
   renderer.render( scene, camera );
 }
 
-var animate = function () {
+const animate = () => {
   requestAnimationFrame( animate );
   // spherePoints.rotation.y += 0.01;
 

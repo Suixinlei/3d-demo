@@ -19,7 +19,7 @@ module.exports = {
     filename: '[name].js',
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx', 'json'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     alias: {
       resource: path.join(__dirname, 'resource'),
     },

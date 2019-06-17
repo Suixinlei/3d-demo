@@ -24,17 +24,15 @@ function returnSphericalCoordinates(latitude, longitude) {
   return new THREE.Vector3(-targetX, targetY, targetZ);
 }
 
-function returnSphericalCoordinates2(latitude, longitude) {
-  const targetRadius = props.globeRadius * 1.2;
-
+function returnMapBorderSphericalCoordinates(latitude, longitude) {
   // Convert latitude and longitude on the 90/180 degree axis
-  latitude = ((latitude - props.mapSize.width) / props.mapSize.width) * 180;
-  longitude = ((longitude - props.mapSize.height) / props.mapSize.height) * -90;
+  latitude = ((latitude - props.mapBorderSize.width) / props.mapBorderSize.width) * 180;
+  longitude = ((longitude - props.mapBorderSize.height) / props.mapBorderSize.height) * -90;
 
   // Calculate the projected starting point
-  var radius = Math.cos(longitude / 180 * Math.PI) * targetRadius;
+  var radius = Math.cos(longitude / 180 * Math.PI) * (props.globeRadius + 5);
   var targetX = Math.cos(latitude / 180 * Math.PI) * radius;
-  var targetY = Math.sin(longitude / 180 * Math.PI) * targetRadius;
+  var targetY = Math.sin(longitude / 180 * Math.PI) * (props.globeRadius + 5);
   var targetZ = Math.sin(latitude / 180 * Math.PI) * radius;
 
   return new THREE.Vector3(-targetX, targetY, targetZ);
@@ -53,7 +51,7 @@ function toScreenPosition(obj, renderer, cameraInstance) {
     vector.x = ( vector.x * widthHalf ) + widthHalf;
     vector.y = - ( vector.y * heightHalf ) + heightHalf;
 
-    return { 
+    return {
         x: vector.x,
         y: vector.y
     };
@@ -63,5 +61,5 @@ module.exports = {
   convertLngLat,
   toScreenPosition,
   returnSphericalCoordinates,
-  returnSphericalCoordinates2
+  returnMapBorderSphericalCoordinates
 };

@@ -25,7 +25,8 @@
     "RegionEndpoint": "ecs.cn-huhehaote.aliyuncs.com",
     "LocalName": "华北 5 (呼和浩特)",
     "lng": 111.4124,
-    "lat": 40.4901
+    "lat": 40.4901,
+    "textDirection": "left"
   },
   {
     "RegionId": "cn-hangzhou",
@@ -46,14 +47,15 @@
     "RegionEndpoint": "ecs.aliyuncs.com",
     "LocalName": "华南 1 (深圳)",
     "lng": 114.3435,
-    "lat": 22.6439
+    "lat": 22.6539
   },
   {
     "RegionId": "cn-hongkong",
     "RegionEndpoint": "ecs.aliyuncs.com",
     "LocalName": "香港",
     "lng": 114.2578,
-    "lat": 22.2242
+    "lat": 22.2142,
+    "textDirection": "left"
   },
   {
     "RegionId": "ap-northeast-1",

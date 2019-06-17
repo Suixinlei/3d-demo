@@ -1,0 +1,135 @@
+[
+  {
+    "RegionId": "cn-qingdao",
+    "RegionEndpoint": "ecs.aliyuncs.com",
+    "LocalName": "华北 1",
+    "lng": 120.4651,
+    "lat": 36.3373
+  },
+  {
+    "RegionId": "cn-beijing",
+    "RegionEndpoint": "ecs.aliyuncs.com",
+    "LocalName": "华北 2",
+    "lng": 116.4551,
+    "lat": 40.2539
+  },
+  {
+    "RegionId": "cn-zhangjiakou",
+    "RegionEndpoint": "ecs.cn-zhangjiakou.aliyuncs.com",
+    "LocalName": "华北 3",
+    "lng": 115.1477,
+    "lat": 40.8527
+  },
+  {
+    "RegionId": "cn-huhehaote",
+    "RegionEndpoint": "ecs.cn-huhehaote.aliyuncs.com",
+    "LocalName": "华北 5",
+    "lng": 111.4124,
+    "lat": 40.4901
+  },
+  {
+    "RegionId": "cn-hangzhou",
+    "RegionEndpoint": "ecs.aliyuncs.com",
+    "LocalName": "华东 1",
+    "lng": 119.5313,
+    "lat": 29.8773
+  },
+  {
+    "RegionId": "cn-shanghai",
+    "RegionEndpoint": "ecs.aliyuncs.com",
+    "LocalName": "华东 2",
+    "lng": 121.4648,
+    "lat": 31.2891
+  },
+  {
+    "RegionId": "cn-shenzhen",
+    "RegionEndpoint": "ecs.aliyuncs.com",
+    "LocalName": "华南 1",
+    "lng": 114.5435,
+    "lat": 22.5439
+  },
+  {
+    "RegionId": "cn-hongkong",
+    "RegionEndpoint": "ecs.aliyuncs.com",
+    "LocalName": "香港",
+    "lng": 114.2578,
+    "lat": 22.3242
+  },
+  {
+    "RegionId": "ap-northeast-1",
+    "RegionEndpoint": "ecs.ap-northeast-1.aliyuncs.com",
+    "LocalName": "亚太东北 1 (东京)",
+    "lng": 139.6590904,
+    "lat": 35.6694166
+  },
+  {
+    "RegionId": "ap-southeast-1",
+    "RegionEndpoint": "ecs.aliyuncs.com",
+    "LocalName": "亚太东南 1 (新加坡)",
+    "lng": 103.8000656,
+    "lat": 1.3611212
+  },
+  {
+    "RegionId": "ap-southeast-2",
+    "RegionEndpoint": "ecs.ap-southeast-2.aliyuncs.com",
+    "LocalName": "亚太东南 2 (悉尼)",
+    "lng": 150.9408954,
+    "lat": -33.8119449
+  },
+  {
+    "RegionId": "ap-southeast-3",
+    "RegionEndpoint": "ecs.ap-southeast-3.aliyuncs.com",
+    "LocalName": "亚太东南 3 (吉隆坡)",
+    "lng": 101.6169498,
+    "lat": 3.138675
+  },
+  {
+    "RegionId": "ap-southeast-5",
+    "RegionEndpoint": "ecs.ap-southeast-5.aliyuncs.com",
+    "LocalName": "亚太东南 5 (雅加达)",
+    "lng": 106.7594783,
+    "lat": -6.2295712
+  },
+  {
+    "RegionId": "ap-south-1",
+    "RegionEndpoint": "ecs.ap-south-1.aliyuncs.com",
+    "LocalName": "亚太南部 1 (孟买)",
+    "lng": 72.7411031,
+    "lat": 19.0825223
+  },
+  {
+    "RegionId": "us-east-1",
+    "RegionEndpoint": "ecs.aliyuncs.com",
+    "LocalName": "美国东部 1 (弗吉尼亚)",
+    "lng": -78.8096973,
+    "lat": 37.8086039
+  },
+  {
+    "RegionId": "us-west-1",
+    "RegionEndpoint": "ecs.aliyuncs.com",
+    "LocalName": "美国西部 1 (硅谷)",
+    "lng": -122.1811801,
+    "lat": 37.4029937
+  },
+  {
+    "RegionId": "eu-west-1",
+    "RegionEndpoint": "ecs.eu-west-1.aliyuncs.com",
+    "LocalName": "英国 (伦敦)",
+    "lng": -0.2416795,
+    "lat": 51.5287718
+  },
+  {
+    "RegionId": "me-east-1",
+    "RegionEndpoint": "ecs.me-east-1.aliyuncs.com",
+    "LocalName": "中东东部 1 (迪拜)",
+    "lng": 55.0439675,
+    "lat": 25.0888623
+  },
+  {
+    "RegionId": "eu-central-1",
+    "RegionEndpoint": "ecs.eu-central-1.aliyuncs.com",
+    "LocalName": "欧洲中部 1 (法兰克福)",
+    "lng": 8.5665246,
+    "lat": 50.121301
+  }
+]

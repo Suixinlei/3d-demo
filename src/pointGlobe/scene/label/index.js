@@ -11,6 +11,11 @@ class Label {
     this.scene = scene;
     this.data = data;
     this.init();
+
+    const animation = document.createElement('div');
+    animation.className = 'point-animation';
+    document.body.appendChild(animation);
+    this.animation = animation;
   }
 
   init() {
@@ -30,7 +35,7 @@ class Label {
         position: 'absolute',
         color: '#00ffff',
         padding: '4px 8px',
-        transform: 'translate(0, -50%)',
+        transform: this.data.textDirection === 'left' ? 'translate(-100%, -50%)' : 'translate(0, -50%)',
         cursor: 'pointer',
       },
     });
@@ -68,12 +73,14 @@ class Label {
     this.instance.material.color.set(0xffff00);
   }
 
-  addAnimation() {
-    const animationDiv = document.createElement('div');
+  addAnimation(position) {
+    this.animation.style.top = `${position.y}px`;
+    this.animation.style.left = `${position.x}px`;
+    this.animation.classList.add('show');
   }
 
   removeAnimation() {
-
+    this.animation.classList.remove('show');
   }
 }
 

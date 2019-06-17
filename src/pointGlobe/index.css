@@ -67,6 +67,43 @@ body {
     }
 }
 
+.point-animation {
+    position: absolute;
+    display: none;
+    width: 32px;
+    height: 32px;
+    transform: translate(-50%, -50%);
+}
+.point-animation.show {
+    display: block;
+}
+.point-animation:before,
+.point-animation:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent url("/images/wave.png") no-repeat center/100% 100%;
+
+    animation: point-scale 3s linear infinite;
+}
+.point-animation:after {
+    animation-delay: 1s;
+}
+
+@keyframes point-scale {
+    from {
+        transform: scale(0.01);
+        opacity: 1;
+    }
+    to {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
 .pulse {
     position: absolute;
     width: 50px;

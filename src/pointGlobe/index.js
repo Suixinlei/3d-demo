@@ -21,7 +21,7 @@ const cameraHelper = new THREE.CameraHelper(camera);
 scene.add(camera);
 scene.add(cameraHelper);
 
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
@@ -56,8 +56,8 @@ controls.addEventListener( 'change', render );
 controls.minDistance = 500;
 controls.maxDistance = 1000;
 controls.enablePan = false;
-// controls.maxPolarAngle = Math.PI / 3;
-// controls.minPolarAngle = Math.PI / 3;
+controls.maxPolarAngle = Math.PI / 3;
+controls.minPolarAngle = Math.PI / 3;
 
 controls.update();
 
@@ -67,10 +67,10 @@ document.body.appendChild( stats.dom );
 
 // earth
 const earthGeometry = new THREE.SphereGeometry(props.innerGlobeRadius, 64, 64);
-const earthMaterial = new THREE.MeshBasicMaterial({ color: 0x0c0000, envMap: scene.background });
+const earthMaterial = new THREE.MeshBasicMaterial({ color: 0x0c0000, envMap: scene.background, opacity: 0.80 });
 earthMaterial.transparent = false;
 const earth = new THREE.Mesh(earthGeometry, earthMaterial);
-// scene.add(earth);
+scene.add(earth);
 
 const vertices = [];
 // points
@@ -151,7 +151,7 @@ scene.add( beijing );
 const div = document.createElement('div');
 div.innerHTML = '233';
 document.body.appendChild(div);
-div.style.color = 'white';
+div.style.color = '#00ffff';
 div.style.position = 'absolute';
 
 function render() {

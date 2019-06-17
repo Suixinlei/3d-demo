@@ -1,5 +1,5 @@
 const props = {
-  initCameraDistance: 700,
+  initCameraDistance: 900,
   globeRadius: 512,
   innerGlobeRadius: 500,
   mapSize: {

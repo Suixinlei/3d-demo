@@ -9,6 +9,10 @@ const Label = require('./scene/label/index');
 const props = require('./props');
 const regionData = require('./region');
 
+const {
+  toScreenPosition,
+} = require('./utils');
+
 require('./index.css');
 
 const scene = new THREE.Scene();
@@ -76,6 +80,40 @@ regionData.forEach((dataItem) => {
   );
 });
 
+let index = 0;
+setInterval(() => {
+  if (index < regions.length - 1) {
+    rotateAnimation(regions[index]);
+    regions[index].hover();
+
+    if (regions[index - 1]) {
+      regions[index - 1].unHover();
+      region.removeAnimation();
+    }
+
+    index += 1;
+  }
+}, 5000);
+
+
+function rotateAnimation(region) {
+  const vec = region.instance.position;
+  const oldCameraPosition = camera.position.clone();
+  const tween = new TWEEN.Tween({ x: 0 }).to({ x: 1 }, 3000);
+  tween.easing(TWEEN.Easing.Sinusoidal.InOut);
+  tween.onUpdate(function() {
+    const cameraPosition = oldCameraPosition.clone().lerp(vec, this.x).setLength(props.initCameraDistance);
+    camera.position.x = cameraPosition.x;
+    camera.position.y = cameraPosition.y;
+    camera.position.z = cameraPosition.z;
+  });
+  tween.onComplete(() => {
+    const region2DPosition = toScreenPosition(region.instance, renderer, camera);
+    region.addAnimation(region2DPosition);
+  });
+  tween.start();
+}
+
 
 function render() {
   if (regions && Array.isArray(regions)) {
@@ -83,6 +121,8 @@ function render() {
       region.render(camera, renderer);
     });
   }
+
+  camera.lookAt(new THREE.Vector3(0, 0, 0));
   renderer.render( scene, camera );
 }
 

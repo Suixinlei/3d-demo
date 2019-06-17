@@ -59,6 +59,22 @@ class Label {
       });
     }
   }
+
+  hover() {
+    this.instance.material.color.set(0xff0000);
+  }
+
+  unHover() {
+    this.instance.material.color.set(0xffff00);
+  }
+
+  addAnimation() {
+    const animationDiv = document.createElement('div');
+  }
+
+  removeAnimation() {
+
+  }
 }
 
 module.exports = Label;

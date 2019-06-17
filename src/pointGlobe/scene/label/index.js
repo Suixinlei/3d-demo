@@ -28,6 +28,9 @@ class Label {
       style: {
         position: 'absolute',
         color: '#00ffff',
+        padding: '4px 8px',
+        transform: 'translate(0, -50%)',
+        cursor: 'pointer',
       },
     });
 

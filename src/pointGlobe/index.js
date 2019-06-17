@@ -88,7 +88,7 @@ setInterval(() => {
 
     if (regions[index - 1]) {
       regions[index - 1].unHover();
-      region.removeAnimation();
+      regions[index - 1].removeAnimation();
     }
 
     index += 1;

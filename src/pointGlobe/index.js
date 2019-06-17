@@ -4,7 +4,7 @@ const TWEEN = require('tween');
 const pointVertexShader = require('./glsl/points/vertexShader.glsl');
 const pointFragmentShader = require('./glsl/points/fragmentShader.glsl');
 
-const globePoints = require('./pointsGeo.json');
+const globePoints = require('./map2-pixel.json');
 const { 
   convertLngLat,
   toScreenPosition,
@@ -25,6 +25,21 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
+// 鼠标
+var raycaster = new THREE.Raycaster();
+var mouse = new THREE.Vector2();
+
+function onMouseMove( event ) {
+
+	// calculate mouse position in normalized device coordinates
+	// (-1 to +1) for both components
+
+	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+}
+window.addEventListener('mousemove', onMouseMove, false );
+
 // 环境光
 const ambient = new THREE.AmbientLight( 0xffffff, 0.1 );
 scene.add( ambient );
@@ -41,6 +56,8 @@ controls.addEventListener( 'change', render );
 controls.minDistance = 500;
 controls.maxDistance = 1000;
 controls.enablePan = false;
+// controls.maxPolarAngle = Math.PI / 3;
+// controls.minPolarAngle = Math.PI / 3;
 
 controls.update();
 
@@ -122,13 +139,10 @@ tween.delay(2000);
 // tween.start();
 
 // 增加北京点
-var beijingGeometry = new THREE.SphereGeometry( 5, 32, 32 );
+var beijingGeometry = new THREE.SphereGeometry( 2, 8, 8 );
 var beijingMaterial = new THREE.MeshBasicMaterial( {color: 0xffff00} );
 var beijing = new THREE.Mesh( beijingGeometry, beijingMaterial );
-const beijingPosition =  convertLngLat({
-  x: 39.9042,
-  y: 116.4074
-});
+const beijingPosition = convertLngLat(39.9042, 116.4074);
 beijing.position.x = beijingPosition.x;
 beijing.position.y = beijingPosition.y;
 beijing.position.z = beijingPosition.z;
@@ -141,17 +155,32 @@ div.style.color = 'white';
 div.style.position = 'absolute';
 
 function render() {
-  if (camera.position.distanceTo(beijing.position) < 700) {
-    const absolutePosition = toScreenPosition(beijing, renderer, camera);
-    if (absolutePosition.y > 0 && absolutePosition.x > 0) {
-      div.style.left = absolutePosition.x + 'px';
-      div.style.top = absolutePosition.y + 'px';
-      div.style.display = 'block';
+  if (beijing) {
+    if (camera.position.distanceTo(beijing.position) < 700) {
+      const absolutePosition = toScreenPosition(beijing, renderer, camera);
+      if (absolutePosition.y > 0 && absolutePosition.x > 0) {
+        div.style.left = absolutePosition.x + 'px';
+        div.style.top = absolutePosition.y + 'px';
+        div.style.display = 'block';
+      } else {
+        div.style.display = 'none';
+      }
     } else {
       div.style.display = 'none';
     }
-  } else {
-    div.style.display = 'none';
+
+    raycaster.setFromCamera( mouse, camera );
+    const waitingRotate = [
+      beijing,
+    ];
+    var intersects = raycaster.intersectObjects(waitingRotate);
+    if (intersects.length > 0) {
+      intersects[0].object.material.color.set(0xff0000);
+    } else {
+      for (let i = 0; i < waitingRotate.length; i++ ) {
+        waitingRotate[ i ].material.color.set( 0xffff00 );
+      }
+    }
   }
 
   renderer.render( scene, camera );

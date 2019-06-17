@@ -1,15 +1,13 @@
 const THREE = require('three');
 const props = require('./props');
 
-function convertLngLat(dot) {
-  var lat = dot.y;
-  var lng = dot.x;
+function convertLngLat(lat, lng) {
   var phi = (90 - lat) * Math.PI / 180;
   var theta = (180 - lng) * Math.PI / 180;
   var x = props.globeRadius * Math.sin(phi) * Math.cos(theta);
   var y = props.globeRadius * Math.cos(phi);
   var z = props.globeRadius * Math.sin(phi) * Math.sin(theta);
-  return new THREE.Vector3(x, y, -z);
+  return new THREE.Vector3(x, y, z);
 }
 
 function returnSphericalCoordinates(latitude, longitude) {

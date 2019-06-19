@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "NODE_ENV=development webpack-dev-server",
-    "build": "NODE_ENV=production webpack-cli --config webpack.config.js --env.production"
+    "dev": "cross-env NODE_ENV=development webpack-dev-server",
+    "build": "cross-env NODE_ENV=production webpack-cli --config webpack.config.js --env.production"
   },
   "repository": {
     "type": "git",
@@ -45,6 +45,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
+    "cross-env": "^5.2.0",
     "css-loader": "^1.0.1",
     "file-loader": "^2.0.0",
     "mini-css-extract-plugin": "^0.4.5",

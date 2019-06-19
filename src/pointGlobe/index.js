@@ -24,6 +24,9 @@ const renderer = new THREE.WebGLRenderer({ alpha: false });
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
+// clock
+const clock = new THREE.Clock();
+
 // 鼠标
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
@@ -80,20 +83,20 @@ regionData.forEach((dataItem) => {
   );
 });
 
-let index = 0;
-setInterval(() => {
-  if (index < regions.length - 1) {
-    rotateAnimation(regions[index]);
-    regions[index].hover();
-
-    if (regions[index - 1]) {
-      regions[index - 1].unHover();
-      regions[index - 1].removeAnimation();
-    }
-
-    index += 1;
-  }
-}, 5000);
+// let index = 0;
+// setInterval(() => {
+//   if (index < regions.length - 1) {
+//     rotateAnimation(regions[index]);
+//     regions[index].hover();
+//
+//     if (regions[index - 1]) {
+//       regions[index - 1].unHover();
+//       regions[index - 1].removeAnimation();
+//     }
+//
+//     index += 1;
+//   }
+// }, 5000);
 
 
 function rotateAnimation(region) {
@@ -121,6 +124,9 @@ function render() {
       region.render(camera, renderer);
     });
   }
+
+  const delta = clock.getDelta();
+  pointEarth.update(delta);
 
   camera.lookAt(new THREE.Vector3(0, 0, 0));
   renderer.render( scene, camera );

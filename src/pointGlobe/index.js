@@ -16,6 +16,7 @@ const {
 require('./index.css');
 
 const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x333333);
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 2000 );
 camera.position.z = props.initCameraDistance;
 scene.add(camera);
@@ -68,10 +69,15 @@ scene.add( axesHelper );
 
 // 内藏球体
 const earthGeometry = new THREE.SphereGeometry(props.innerGlobeRadius, 64, 64);
-const earthMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, opacity: 1 });
-earthMaterial.transparent = false;
+const earthMaterial = new THREE.MeshBasicMaterial({ color: 0x111111, transparent: false });
 const earth = new THREE.Mesh(earthGeometry, earthMaterial);
-scene.add(earth);
+// scene.add(earth);
+
+// 内藏柱体
+var geometry = new THREE.CircleGeometry( props.globeRadius, 64 );
+var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
+var circle = new THREE.Mesh( geometry, material );
+scene.add( circle );
 
 pointEarth.Init(scene);
 pointEarthBorder.Init(scene);
@@ -127,6 +133,8 @@ function render() {
 
   const delta = clock.getDelta();
   pointEarth.update(delta);
+
+  circle.lookAt(camera.position);
 
   camera.lookAt(new THREE.Vector3(0, 0, 0));
   renderer.render( scene, camera );

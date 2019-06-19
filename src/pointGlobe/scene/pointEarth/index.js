@@ -46,7 +46,7 @@ function Init(scene) {
     color.setHex(0x00ffff);
     colors.push(colors);
     color.toArray( colors, i * 3 );
-    sizes[ i ] = 10;
+    sizes[ i ] = 8;
   }
   const geometry = new THREE.BufferGeometry();
   geometry.addAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
@@ -69,7 +69,8 @@ function Init(scene) {
 }
 
 function update(delta) {
-  uniforms.time.value += delta * 10;
+  // uniforms.time.value = 0.20;
+  uniforms.time.value += delta * 5;
 }
 
 module.exports = {

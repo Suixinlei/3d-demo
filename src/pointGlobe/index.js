@@ -104,7 +104,7 @@ regionData.forEach((dataItem) => {
 //   }
 // }, 5000);
 
-
+// 点轮播动画
 function rotateAnimation(region) {
   const vec = region.instance.position;
   const oldCameraPosition = camera.position.clone();

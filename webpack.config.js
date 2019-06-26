@@ -5,13 +5,10 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
   mode: 'development',
   entry: {
-    globe: path.join(__dirname, 'src', 'globe', 'index.ts'),
-    idc: path.join(__dirname, 'src', 'idc', 'index.ts'),
-    roomSelect: path.join(__dirname, 'src', 'roomSelect', 'index.ts'),
-    room: path.join(__dirname, 'src', 'room', 'index.ts'),
     animateGlobe: path.join(__dirname, 'src', 'animateGlobe', 'index.ts'),
-    planeGlobe: path.join(__dirname, 'src', 'planeGlobe', 'index.ts'),
     pointGlobe: path.join(__dirname, 'src', 'pointGlobe', 'index.js'),
+    expandGlobe: path.join(__dirname, 'src', 'expandGlobe', 'index.js'),
+    drawLine: path.join(__dirname, 'src', 'drawLine', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, 'build'),

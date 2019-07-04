@@ -3,8 +3,13 @@ uniform float time;
 varying vec4 worldPosition;
 
 void main() {
-    float sameColor = abs(cos(sin(abs(worldPosition.x * worldPosition.x + worldPosition.y * worldPosition.y + worldPosition.z * worldPosition.z) + time / 2.0)));
+    float xwave = worldPosition.x + time / 50.;
 
-    gl_FragColor = vec4(0.0, sameColor, sameColor, 1.0);
+    float heights = 5.;
+    float pi = 3.14159265359;
+    float wave = sin(heights * 2. * pi * xwave );
+    wave = (wave + 1. ) / 2.;
+
+    gl_FragColor = vec4(vec3(0, wave, wave), 1.);
     gl_FragColor = gl_FragColor * texture2D( texture, gl_PointCoord );
 }

@@ -70,7 +70,7 @@ function Init(scene) {
 
 function update(delta) {
   // uniforms.time.value = 0.20;
-  uniforms.time.value += delta * 5;
+  uniforms.time.value += delta * 5
 }
 
 module.exports = {

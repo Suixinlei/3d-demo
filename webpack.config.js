@@ -9,6 +9,7 @@ module.exports = {
     pointGlobe: path.join(__dirname, 'src', 'pointGlobe', 'index.js'),
     expandGlobe: path.join(__dirname, 'src', 'expandGlobe', 'index.js'),
     drawLine: path.join(__dirname, 'src', 'drawLine', 'index.js'),
+    mapGlobe: path.join(__dirname, 'src', 'mapGlobe', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, 'build'),
@@ -62,6 +63,7 @@ module.exports = {
     '@alife/aisc-widgets': 'var AiscWidgets',
     three: 'THREE',
     tween: 'TWEEN',
+    mapboxgl: 'mapboxgl',
   },
   plugins: [
     new MiniCssExtractPlugin({

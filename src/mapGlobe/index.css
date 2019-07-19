@@ -1,0 +1,62 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+html {
+    background-color: #000;
+    color: #fff;
+    font-family: sans-serif;
+}
+
+canvas {
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+}
+
+#map, #equirectangular-map {
+    position: absolute;
+    pointer-events: none;
+    right: 0;
+    opacity: 0;
+}
+
+.DEBUG #map, .DEBUG #equirectangular-map {
+    opacity: 1;
+}
+
+#map {
+    bottom: 0;
+    transform: scale(.1);
+    transform-origin: bottom right;
+}
+
+#equirectangular-map {
+    transform: scale(.1);
+    transform-origin: top right;
+}
+
+#container canvas {
+    vertical-align: top;
+}
+
+#loader {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    animation: fade .5s infinite ease-in-out alternate;
+}
+
+@keyframes fade {
+    0% {
+        opacity: .3
+    }
+    100% {
+        opacity: 1
+    }
+}
+
+.fullscreen #options, .fullscreen footer {
+    display: none;
+}

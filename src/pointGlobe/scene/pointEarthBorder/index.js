@@ -51,6 +51,8 @@ function Init(scene) {
 
   const spherePoints = new THREE.Points(geometry, pointMaterial);
   scene.add(spherePoints);
+
+  return spherePoints;
 }
 
 module.exports = {

@@ -156,7 +156,7 @@ function setArc3D(pointStart, pointEnd, smoothness, color, clockWise) {
   var angleDelta = angle / (smoothness - 1); // increment
 
   const vertices = [];
-  for (var i = 0; i < smoothness - 1; i++) {
+  for (var i = 0; i < smoothness; i++) {
     vertices.push(pointStart.clone().applyAxisAngle(normal, angleDelta * i))  // this is the key operation
   }
 

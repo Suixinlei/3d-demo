@@ -8,6 +8,7 @@ module.exports = {
     animateGlobe: path.join(__dirname, 'src', 'animateGlobe', 'index.ts'),
     pointGlobe: path.join(__dirname, 'src', 'pointGlobe', 'index.js'),
     expandGlobe: path.join(__dirname, 'src', 'expandGlobe', 'index.js'),
+    planeGlobe: path.join(__dirname, 'src', 'planeGlobe', 'index.js'),
     drawLine: path.join(__dirname, 'src', 'drawLine', 'index.js'),
     mapGlobe: path.join(__dirname, 'src', 'mapGlobe', 'index.js'),
   },

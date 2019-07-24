@@ -19,7 +19,7 @@ const uniforms = {
 
 function addPoint(point) {
   // const vector = returnSphericalCoordinates(point.x, point.y);
-  return new THREE.Vector3(point.x, point.y, 0);
+  return new THREE.Vector3(point.x, props.mapSize.height * 2 - point.y, 0);
 }
 
 function Init(scene) {

@@ -23,6 +23,7 @@
     "cannon": "^0.6.2",
     "dat.gui": "^0.7.6",
     "earcut": "^2.1.3",
+    "numvert": "^0.2.2",
     "oimo": "^1.0.9",
     "query-string": "^6.2.0",
     "react": "^16.6.3",

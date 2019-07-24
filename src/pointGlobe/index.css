@@ -1,7 +1,41 @@
 body {
     margin: 0;
 }
+#container {
+    position: relative;  /* makes this the origin of its children */
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
 
+#c {
+    width: 100%;  /* let our container decide our size */
+    height: 100%;
+    display: block;
+}
+
+#labels {
+    position: absolute;  /* let us position ourself inside the container */
+    z-index: 0;          /* make a new stacking context so children don't sort with rest of page */
+    left: 0;             /* make our position the top left of the container */
+    top: 0;
+    color: white;
+}
+#labels>div {
+    background: aqua;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 200px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    user-select: none;
+    pointer-events: none;
+}
+#labels>div:hover {
+    color: red;
+}
 
 @keyframes warn {
     0% {

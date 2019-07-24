@@ -85,14 +85,19 @@ function userInit() {
     new THREE.Vector2(30, 58),
     new THREE.Vector2(72, 60),
     new THREE.Vector2(129, 60),
-    new THREE.Vector2(228, 58),
-    new THREE.Vector2(290, 90),
-    new THREE.Vector2(348, 88),
+    new THREE.Vector2(228, 68),
+    new THREE.Vector2(285, 90),
+    new THREE.Vector2(335, 88),
 
-    new THREE.Vector2(369, 68),
+    new THREE.Vector2(369, 75),
     new THREE.Vector2(400, 58),
     new THREE.Vector2(448, 58),
   ];
+
+  targets.map((item) => {
+    item.y = props.mapSize.height * 2 - item.y;
+    return item;
+  });
 
   targets.forEach((item) => {
     addSphere(item);
@@ -108,7 +113,7 @@ function userInit() {
   var splineObject = new THREE.Line( geometry, material );
   scene.add(splineObject);
 
-  const targetsVecs = curve.getPoints(300);
+  const targetsVecs = curve.getPoints(400);
   const rs = [];
   targetsVecs.forEach((item) => {
     let res = returnSphericalCoordinates(item.x, item.y).setLength(props.globeRadius + 50);
@@ -137,7 +142,7 @@ function onDocumentKeyDown(event) {
 
   if (keyCode === 13) { // 13 is enter
     const vec = cube.position.clone();
-    console.log(`new THREE.Vector2(${vec.x}, ${vec.y}),`);
+    console.log(`new THREE.Vector2(${vec.x}, ${props.mapSize.height * 2 - vec.y}),`);
   }
 };
 

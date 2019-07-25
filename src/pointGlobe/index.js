@@ -64,8 +64,6 @@ controls.rotateSpeed = 0.1;
 controls.enablePan = false;
 controls.update();
 
-controls.update();
-
 // stats
 const stats = new Stats();
 document.body.appendChild( stats.dom );

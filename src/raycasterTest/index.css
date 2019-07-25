@@ -1,0 +1,12 @@
+body {
+    /*opacity: 0.2;*/
+    /*background-image: radial-gradient(50% 100%, #31354E 50%, rgba(49,53,78,0.00) 100%);*/
+}
+
+body {
+    background-color: #f0f0f0;
+    color: #444;
+}
+a {
+    color: #08f;
+}

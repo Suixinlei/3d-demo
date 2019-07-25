@@ -5,7 +5,6 @@ const dat = require('dat.gui');
 
 const pointEarth = require('./scene/pointEarth/index');
 const pointEarthBorder = require('./scene/pointEarthBorder');
-const Line = require('./scene/line');
 
 const props = require('./props');
 const regionData = require('./region');

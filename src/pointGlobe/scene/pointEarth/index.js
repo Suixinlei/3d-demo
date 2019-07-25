@@ -10,7 +10,7 @@ const pointFragmentShader = require('./glsl/fragmentShader.glsl');
 const uniforms = {
   time: { type: "f", value: 0 },
   resolution: { type: "v2", value: new THREE.Vector2 },
-  texture: { value: new THREE.TextureLoader().load( "/images/particle.png" ) }
+  texture: { value: new THREE.TextureLoader().load('https://img.alicdn.com/tfs/TB1toJmbET1gK0jSZFrXXcNCXXa-256-256.png') }
 };
 
 function addPoint(point) {

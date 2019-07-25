@@ -91,11 +91,9 @@ gui.addColor(settings, 'logoColor').onChange(addHeart);
 gui.add(settings, 'isSelfRotate').onChange(requestRenderIfNotRequested);
 
 var effectController = {
-
-  focus: 500.0,
-  aperture:	5,
+  focus: 210.0,
+  aperture:	10,
   maxblur:	1.0
-
 };
 
 var matChanger = function ( ) {
@@ -131,11 +129,14 @@ function addHeart() {
   const color = settings.logoColor;
   var geometry = new THREE.PlaneGeometry( height * 1.5, height, 64 );
   var texture = new THREE.TextureLoader().load('https://img.alicdn.com/tfs/TB1BLQpbeH2gK0jSZJnXXaT1FXa-2678-1722.png');
-  var material = new THREE.MeshPhongMaterial( { color, transparent: true, opacity: 0.2, map: texture } );
+  var material = new THREE.MeshPhongMaterial( { color, transparent: true, opacity: 0.1, map: texture } );
   aliCloudHeart = new THREE.Mesh( geometry, material );
   scene.add(aliCloudHeart);
 }
 addHeart();
+
+const sphere = new THREE.Mesh(new THREE.SphereGeometry(props.globeRadius, 64, 64), new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.2 }));
+scene.add(sphere);
 
 
 let countryInfos;
@@ -182,7 +183,7 @@ function updateLabels() {
     tempV.copy(position);
     tempV.applyMatrix3(normalMatrix);
 
-    // compute the direction to this position from the camera
+    // 计算从点到计算机的单位向量（方向）
     cameraToPoint.copy(position);
     cameraToPoint.applyMatrix4(camera.matrixWorldInverse).normalize();
 
@@ -276,7 +277,8 @@ function render() {
     var looptime = 60 * 1000;
     var t = (time % looptime) / looptime;
     var pos = curve.getPointAt(t).setLength(props.initCameraDistance);
-    camera.lookAt(pos.setLength(props.globeRadius));
+    camera.lookAt(pos.setLength(props.globeRadius + 20));
+    // camera.lookAt(new THREE.Vector3(0, 0, 0));
     camera.position.copy( pos );
   }
 
@@ -285,8 +287,6 @@ function render() {
   updateLabels();
 
   postprocessing.composer.render(delta);
-
-  // renderer.render( scene, camera );
 }
 
 const animate = () => {

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Stats from 'stats.js';
 import TWEEN from 'tween';
 
@@ -43,18 +43,18 @@ function Init() {
   var pointLightHelper = new THREE.PointLightHelper( pointLight, sphereSize );
   scene.add( pointLightHelper );
 
-  var controls = new OrbitControls( camera, renderer.domElement );
-  controls.addEventListener( 'change', render );
-  controls.minDistance = 500;
-  controls.maxDistance = 1000;
-  controls.enablePan = false;
+  // var controls = new OrbitControls( camera, renderer.domElement );
+  // controls.addEventListener( 'change', render );
+  // controls.minDistance = 500;
+  // controls.maxDistance = 1000;
+  // controls.enablePan = false;
 
-  controls.update();
+  // controls.update();
 
 
   // axisHelper
-  var axesHelper = new THREE.AxesHelper( 1000 );
-  scene.add( axesHelper );
+  // var axesHelper = new THREE.AxesHelper( 1000 );
+  // scene.add( axesHelper );
 }
 
 function userInit(type: string) {

@@ -1,0 +1,14 @@
+version: '3'
+services:
+  app:
+    build: 
+      context: .
+      target: builder
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "8080:8080"
+    command: npm run dev
+    environment:
+      - NODE_ENV=development 

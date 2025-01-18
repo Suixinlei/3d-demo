@@ -21,6 +21,7 @@ body {
     top: 0;
     color: white;
 }
+
 #labels>div {
     background: aqua;
     position: absolute;
@@ -33,6 +34,7 @@ body {
     user-select: none;
     pointer-events: none;
 }
+
 #labels>div:hover {
     color: red;
 }

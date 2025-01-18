@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import props from './props';
+import props from '../../scene/props';
 
 export function convertLngLat(lat, lng) {
   var phi = (90 - lat) * Math.PI / 180;

@@ -3,7 +3,7 @@ import globePoints from './border-pixel.json';
 import {
   returnMapBorderSphericalCoordinates,
 } from '../../pages/pointGlobe/utils';
-import props from '../../pages/pointGlobe/props';
+import props from '../props';
 import pointVertexShader from './glsl/vertexShader.glsl';
 import pointFragmentShader from './glsl/fragmentShader.glsl';
 

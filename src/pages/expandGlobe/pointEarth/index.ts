@@ -9,8 +9,6 @@ import pointVertexShader from './glsl/vertexShader.glsl';
 import pointFragmentShader from './glsl/fragmentShader.glsl';
 
 let spherePoints;
-let spherePositions;
-let planePosition;
 
 const uniforms = {
   time: { type: "f", value: 0 },
@@ -62,7 +60,7 @@ function Init(scene) {
     vertexShader: pointVertexShader,
     fragmentShader: pointFragmentShader,
     transparent: true,
-    vertexColors: true,
+    // vertexColors: true,
     depthTest: false,
     blending: THREE.AdditiveBlending,
   });

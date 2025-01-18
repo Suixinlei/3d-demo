@@ -9,9 +9,9 @@ import * as dat from 'dat.gui';
 
 import pointEarth from '../../scene/pointEarth/index';
 import pointEarthBorder from '../../scene/pointEarthBorder';
+import props from '../../scene/props';
 
-import props from './props';
-import regionData from './region';
+import regionData from './region.json';
 
 import {
   convertLngLat,
@@ -30,7 +30,7 @@ const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.inner
 camera.position.z = props.initCameraDistance;
 scene.add(camera);
 
-const canvas = document.querySelector('#c');
+const canvas = document.querySelector('#c') as HTMLCanvasElement;
 const renderer = new THREE.WebGLRenderer({canvas});
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.autoClear = false;
@@ -83,7 +83,13 @@ const settings = {
   logoColor: '#00FFFF',
 };
 
-const postprocessing = {};
+const postprocessing: {
+  composer: EffectComposer;
+  bokeh: BokehPass;
+} = {
+  composer: null,
+  bokeh: null,
+};
 
 const gui = new dat.GUI({width: 300});
 gui.add(settings, 'maxVisibleDot', -1, 1, 0.01).onChange(requestRenderIfNotRequested);
@@ -208,6 +214,7 @@ function updateLabels() {
 
 function initPostprocessing() {
 
+  // @ts-ignore
   var renderPass = new RenderPass( scene, camera );
 
   var bokehPass = new BokehPass( scene, camera, {

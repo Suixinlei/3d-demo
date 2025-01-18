@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import globePoints from './map2-pixel.json';
-import props from '../../pages/pointGlobe/props';
+import props from '../props';
 import {
   returnSphericalCoordinates,
 } from '../../pages/pointGlobe/utils';

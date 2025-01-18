@@ -24,8 +24,8 @@ const list = {
   },
   "测试效果": {
     "完全测试": {
-      "地球展开 3d->2d": "./expandGlobe.html", 
-      "mapbox 真实地图地球": "./mapGLobe.html",
+      "地球故障展开 3d->2d": "/src/pages/expandGlobe/index.html?expandType=zero",
+      "地球展开 3d->2d": "/src/pages/expandGlobe/index.html?expandType=normal",
       "用于画出转动轨迹的平面地图": "./planeGlobe.html",
     },
     "常用效果": {
@@ -55,6 +55,7 @@ for (const section in list) {
       link.textContent = item
       link.setAttribute('target', 'viewer')
       navigation.appendChild(link)
+      link.appendChild(document.createElement('br'))
     }
   }
 }

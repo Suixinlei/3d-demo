@@ -57,21 +57,17 @@ function Init() {
   scene.add( axesHelper );
 }
 
-function userInit() {
+function userInit(type: string) {
   pointEarth.Init(scene);
 
-  // 视角转到中国
-  const targetPosition = new THREE.Vector3(169.65690813034206, 530.5187754104497, 706.9415551943782);
-  camera.position.lerp(targetPosition, 0.02);
-
   setTimeout(() => {
-    // 镜头转回
-    const targetPosition = new THREE.Vector3(0, 0, 0);
-    camera.position.lerp(targetPosition, 0.02);
-
-    // 展开地球
-    // pointEarth.expand();
-    pointEarth.zeroExpand();
+    if (type === 'zero') {
+      // 故障展开
+      pointEarth.zeroExpand();
+    } else {
+      // 展开地球
+      pointEarth.expand();
+    }
   }, 2000);
   
 }
@@ -96,6 +92,9 @@ const animate = () => {
 };
 
 Init();
-userInit();
+
+const params = new URLSearchParams(window.location.search);
+const expandType: string = params.get('expandType') || 'zero';
+userInit(expandType);
 render();
 animate();

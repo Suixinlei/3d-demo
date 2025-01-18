@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 import globePoints from './map2-pixel.json';
-import props from '../../props';
+import props from '../../pages/pointGlobe/props';
 import {
   returnSphericalCoordinates,
-} from '../../utils';
+} from '../../pages/pointGlobe/utils';
 import pointVertexShader from './glsl/vertexShader.glsl';
 import pointFragmentShader from './glsl/fragmentShader.glsl';
 

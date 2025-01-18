@@ -1,25 +1,21 @@
-const THREE = require('three');
-const globePoints = require('./map2-pixel.json');
-const props = require('../props');
-const {
+import * as THREE from 'three';
+import globePoints from './map2-pixel.json';
+import props from '../../pages/pointGlobe/props';
+import {
   returnSphericalCoordinates,
-} = require('../utils');
-const pointVertexShader = require('./glsl/vertexShader.glsl');
-const pointFragmentShader = require('./glsl/fragmentShader.glsl');
-
-let spherePoints;
-let spherePositions;
-let planePosition;
+} from '../../pages/pointGlobe/utils';
+import pointVertexShader from './glsl/vertexShader.glsl';
+import pointFragmentShader from './glsl/fragmentShader.glsl';
 
 const uniforms = {
   time: { type: "f", value: 0 },
   resolution: { type: "v2", value: new THREE.Vector2 },
-  texture: { value: new THREE.TextureLoader().load( "/images/particle.png" ) }
+  texture: { value: new THREE.TextureLoader().load('https://img.alicdn.com/tfs/TB1toJmbET1gK0jSZFrXXcNCXXa-256-256.png') }
 };
 
 function addPoint(point) {
-  // const vector = returnSphericalCoordinates(point.x, point.y);
-  return new THREE.Vector3(point.x, props.mapSize.height * 2 - point.y, 0);
+  const vector = returnSphericalCoordinates(point.x, point.y);
+  return vector;
 }
 
 function Init(scene) {
@@ -66,7 +62,7 @@ function Init(scene) {
     blending: THREE.AdditiveBlending,
   });
 
-  spherePoints = new THREE.Points(geometry, pointMaterial);
+  const spherePoints = new THREE.Points(geometry, pointMaterial);
   scene.add(spherePoints);
 
   return spherePoints;
@@ -74,10 +70,10 @@ function Init(scene) {
 
 function update(delta) {
   // uniforms.time.value = 0.20;
-  uniforms.time.value += delta * 5;
+  uniforms.time.value += delta * 5
 }
 
-module.exports = {
+export default {
   Init,
   update,
 };

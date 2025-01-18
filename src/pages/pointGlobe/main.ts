@@ -7,8 +7,8 @@ import Stats from 'stats.js';
 import TWEEN from 'tween';
 import * as dat from 'dat.gui';
 
-import pointEarth from './scene/pointEarth/index';
-import pointEarthBorder from './scene/pointEarthBorder';
+import pointEarth from '../../scene/pointEarth/index';
+import pointEarthBorder from '../../scene/pointEarthBorder';
 
 import props from './props';
 import regionData from './region';
@@ -90,7 +90,7 @@ gui.add(settings, 'maxVisibleDot', -1, 1, 0.01).onChange(requestRenderIfNotReque
 gui.add(settings, 'isSelfRotate').onChange(requestRenderIfNotRequested);
 
 var effectController = {
-  focus: 210.0,
+  focus: 130.0,
   aperture:	10,
   maxblur:	1.0
 };
@@ -244,6 +244,10 @@ function resizeRendererToDisplaySize(renderer) {
 
 function render() {
   renderRequested = undefined;
+
+  const distance = 632.95; // 你想要的新距离  
+  camera.position.normalize(); // 先归一化方向向量  
+  camera.position.multiplyScalar(distance); // 然后缩放到想要的距离  
 
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;

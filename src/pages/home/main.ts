@@ -19,18 +19,14 @@ content?.appendChild(navigation)
 const list = {
   "整体效果": {
     "地球": {
-      "地球展示 + 自转": "./pointGlobe.html"
+      "地球展示 + 自转": "/src/pages/pointGlobe/index.html"
     }
   },
   "测试效果": {
     "完全测试": {
       "地球故障展开 3d->2d": "/src/pages/expandGlobe/index.html?expandType=zero",
       "地球展开 3d->2d": "/src/pages/expandGlobe/index.html?expandType=normal",
-      "用于画出转动轨迹的平面地图": "./planeGlobe.html",
     },
-    "常用效果": {
-      "飞线效果": "./drawLine.html"
-    }
   }
 }
 

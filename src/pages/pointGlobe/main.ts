@@ -1,4 +1,9 @@
 import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
+import { BokehPass } from 'three/examples/jsm/postprocessing/BokehPass';
 import Stats from 'stats.js';
 import TWEEN from 'tween';
 import * as dat from 'dat.gui';
@@ -52,7 +57,7 @@ var sphereSize = 5;
 var pointLightHelper = new THREE.PointLightHelper( pointLight, sphereSize );
 scene.add( pointLightHelper );
 
-var controls = new THREE.OrbitControls( camera, renderer.domElement );
+var controls = new OrbitControls( camera, renderer.domElement );
 controls.addEventListener( 'change', render );
 controls.minDistance = 500;
 controls.maxDistance = 1000;
@@ -218,9 +223,9 @@ function updateLabels() {
 
 function initPostprocessing() {
 
-  var renderPass = new THREE.RenderPass( scene, camera );
+  var renderPass = new RenderPass( scene, camera );
 
-  var bokehPass = new THREE.BokehPass( scene, camera, {
+  var bokehPass = new BokehPass( scene, camera, {
     focus: 1.0,
     aperture:	0.025,
     maxblur:	1.0,
@@ -229,7 +234,7 @@ function initPostprocessing() {
     height: height
   } );
 
-  var composer = new THREE.EffectComposer( renderer );
+  var composer = new EffectComposer( renderer );
 
   composer.addPass( renderPass );
   composer.addPass( bokehPass );
@@ -253,6 +258,7 @@ function resizeRendererToDisplaySize(renderer) {
 }
 
 let renderRequested = false;
+
 function render() {
   renderRequested = undefined;
 

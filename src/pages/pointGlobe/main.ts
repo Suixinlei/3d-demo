@@ -1,19 +1,17 @@
-const THREE = require('three');
-const Stats = require('stats.js');
-const TWEEN = require('tween');
-const dat = require('dat.gui');
+import * as THREE from 'three';
+import Stats from 'stats.js';
+import TWEEN from 'tween';
+import * as dat from 'dat.gui';
 
-const pointEarth = require('./scene/pointEarth/index');
-const pointEarthBorder = require('./scene/pointEarthBorder');
+import pointEarth from './scene/pointEarth/index';
+import pointEarthBorder from './scene/pointEarthBorder';
 
-const props = require('./props');
-const regionData = require('./region');
+import props from './props';
+import regionData from './region';
 
-const {
+import {
   convertLngLat,
-} = require('./utils');
-
-require('./index.css');
+} from './utils';
 
 let width = window.innerWidth;
 let height = window.innerHeight;

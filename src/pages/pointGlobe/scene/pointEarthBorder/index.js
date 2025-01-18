@@ -1,11 +1,11 @@
-const THREE = require('three');
-const globePoints = require('./border-pixel.json');
-const {
+import * as THREE from 'three';
+import globePoints from './border-pixel.json';
+import {
   returnMapBorderSphericalCoordinates,
-} = require('../../utils');
-const props = require('../../props');
-const pointVertexShader = require('./glsl/vertexShader.glsl');
-const pointFragmentShader = require('./glsl/fragmentShader.glsl');
+} from '../../utils';
+import props from '../../props';
+import pointVertexShader from './glsl/vertexShader.glsl';
+import pointFragmentShader from './glsl/fragmentShader.glsl';
 
 function Init(scene) {
   const vertices = [];
@@ -55,6 +55,6 @@ function Init(scene) {
   return spherePoints;
 }
 
-module.exports = {
+export default {
   Init,
 };

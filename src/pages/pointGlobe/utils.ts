@@ -1,7 +1,7 @@
-const THREE = require('three');
-const props = require('./props');
+import * as THREE from 'three';
+import props from './props';
 
-function convertLngLat(lat, lng) {
+export function convertLngLat(lat, lng) {
   var phi = (90 - lat) * Math.PI / 180;
   var theta = (180 - lng) * Math.PI / 180;
   var x = props.globeRadius * Math.sin(phi) * Math.cos(theta);
@@ -10,7 +10,7 @@ function convertLngLat(lat, lng) {
   return new THREE.Vector3(x, y, z);
 }
 
-function returnSphericalCoordinates(latitude, longitude) {
+export function returnSphericalCoordinates(latitude, longitude) {
   // Convert latitude and longitude on the 90/180 degree axis
   latitude = ((latitude - props.mapSize.width) / props.mapSize.width) * 180;
   longitude = ((longitude - props.mapSize.height) / props.mapSize.height) * -90;
@@ -24,7 +24,7 @@ function returnSphericalCoordinates(latitude, longitude) {
   return new THREE.Vector3(-targetX, targetY, targetZ);
 }
 
-function returnMapBorderSphericalCoordinates(latitude, longitude) {
+export function returnMapBorderSphericalCoordinates(latitude, longitude) {
   // Convert latitude and longitude on the 90/180 degree axis
   latitude = ((latitude - props.mapBorderSize.width) / props.mapBorderSize.width) * 180;
   longitude = ((longitude - props.mapBorderSize.height) / props.mapBorderSize.height) * -90;
@@ -77,10 +77,3 @@ function setArc3D(pointStart, pointEnd, smoothness, color, clockWise) {
 
   return vertices;
 }
-
-module.exports = {
-  convertLngLat,
-  toScreenPosition,
-  returnSphericalCoordinates,
-  returnMapBorderSphericalCoordinates
-};

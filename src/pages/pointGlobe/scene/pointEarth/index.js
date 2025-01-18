@@ -1,11 +1,11 @@
-const THREE = require('three');
-const globePoints = require('./map2-pixel.json');
-const props = require('../../props');
-const {
+import * as THREE from 'three';
+import globePoints from './map2-pixel.json';
+import props from '../../props';
+import {
   returnSphericalCoordinates,
-} = require('../../utils');
-const pointVertexShader = require('./glsl/vertexShader.glsl');
-const pointFragmentShader = require('./glsl/fragmentShader.glsl');
+} from '../../utils';
+import pointVertexShader from './glsl/vertexShader.glsl';
+import pointFragmentShader from './glsl/fragmentShader.glsl';
 
 const uniforms = {
   time: { type: "f", value: 0 },
@@ -73,7 +73,7 @@ function update(delta) {
   uniforms.time.value += delta * 5
 }
 
-module.exports = {
+export default {
   Init,
   update,
 };

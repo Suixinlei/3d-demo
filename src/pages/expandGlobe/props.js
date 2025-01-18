@@ -13,4 +13,4 @@ const props = {
   }
 };
 
-module.exports = props;
+export default props;

@@ -1,5 +1,5 @@
-const THREE = require('three');
-const props = require('./props');
+import * as THREE from 'three';
+import props from './props';
 
 function convertLngLat(lat, lng) {
   var phi = (90 - lat) * Math.PI / 180;
@@ -24,7 +24,7 @@ function returnSphericalCoordinates(latitude, longitude) {
   return new THREE.Vector3(-targetX, targetY, targetZ);
 }
 
-module.exports = {
+export {
   convertLngLat,
   returnSphericalCoordinates,
 };

@@ -1,9 +1,11 @@
-const THREE = require('three');
-const Stats = require('stats.js');
-const TWEEN = require('tween');
+// const THREE = require('three');
+// const Stats = require('stats.js');
+// const TWEEN = require('tween');
 
-const props = require('./props');
-const pointEarth = require('./pointEarth/index');
+import Stats from 'stats.js';
+
+import props from './props';
+import pointEarth from './pointEarth/index';
 
 let scene;
 let camera;

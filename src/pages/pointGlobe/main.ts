@@ -18,6 +18,8 @@ import {
   convertLngLat,
 } from './utils';
 
+let renderRequested = false;
+
 let width = window.innerWidth;
 let height = window.innerHeight;
 let windowHalfX = window.innerWidth / 2;
@@ -256,8 +258,6 @@ function resizeRendererToDisplaySize(renderer) {
   }
   return needResize;
 }
-
-let renderRequested = false;
 
 function render() {
   renderRequested = undefined;

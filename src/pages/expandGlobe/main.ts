@@ -39,37 +39,36 @@ function Init() {
   const pointLight = new THREE.PointLight( 0xff0000, 5, 1000);
   pointLight.position.set( 0, 0, 0 );
   scene.add( pointLight );
-  var sphereSize = 5;
-  var pointLightHelper = new THREE.PointLightHelper( pointLight, sphereSize );
-  scene.add( pointLightHelper );
-
-  // var controls = new OrbitControls( camera, renderer.domElement );
-  // controls.addEventListener( 'change', render );
-  // controls.minDistance = 500;
-  // controls.maxDistance = 1000;
-  // controls.enablePan = false;
-
-  // controls.update();
-
-
-  // axisHelper
-  // var axesHelper = new THREE.AxesHelper( 1000 );
-  // scene.add( axesHelper );
 }
 
 function userInit(type: string) {
   pointEarth.Init(scene);
 
-  setTimeout(() => {
-    if (type === 'zero') {
-      // 故障展开
-      pointEarth.zeroExpand();
-    } else {
-      // 展开地球
-      pointEarth.expand();
-    }
-  }, 2000);
+  // 先让相机自转一周
+  const startRotation = {angle: 0};
+  const endRotation = {angle: Math.PI * 2};
   
+  new TWEEN.Tween(startRotation)
+    .to(endRotation, 2000)
+    .easing(TWEEN.Easing.Linear.None)
+    .onUpdate(() => {
+      const x = props.initCameraDistance * Math.sin(startRotation.angle);
+      const z = props.initCameraDistance * Math.cos(startRotation.angle);
+      camera.position.set(x, 0, z);
+      camera.lookAt(0, 0, 0);
+    })
+    .onComplete(() => {
+      camera.position.set(0, 0, props.initCameraDistance);
+      camera.rotation.set(0, 0, 0);
+      if (type === 'zero') {
+        // 故障展开
+        pointEarth.zeroExpand();
+      } else {
+        // 展开地球
+        pointEarth.expand();
+      }
+    })
+    .start();
 }
 
 function render() {

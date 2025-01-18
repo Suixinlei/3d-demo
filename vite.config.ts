@@ -12,6 +12,7 @@ export default defineConfig({
         expandGlobe: resolve(__dirname, 'src/pages/expandGlobe/index.html'),
         pointGlobe: resolve(__dirname, 'src/pages/pointGlobe/index.html'),
         raycasterTest: resolve(__dirname, 'src/pages/raycasterTest/index.html'),
+        naviGlobe: resolve(__dirname, 'src/pages/naviGlobe/index.html'),
       }
     }
   },

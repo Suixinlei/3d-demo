@@ -223,8 +223,6 @@ function initPostprocessing() {
 
   postprocessing.composer = composer;
   postprocessing.bokeh = bokehPass;
-
-  console.log(postprocessing);
 }
 
 

@@ -1,8 +1,10 @@
 // const THREE = require('three');
 // const Stats = require('stats.js');
 // const TWEEN = require('tween');
-
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Stats from 'stats.js';
+import TWEEN from '@tweenjs/tween.js';
 
 import props from './props';
 import pointEarth from './pointEarth/index';
@@ -44,7 +46,7 @@ function Init() {
   var pointLightHelper = new THREE.PointLightHelper( pointLight, sphereSize );
   scene.add( pointLightHelper );
 
-  var controls = new THREE.OrbitControls( camera, renderer.domElement );
+  var controls = new OrbitControls( camera, renderer.domElement );
   controls.addEventListener( 'change', render );
   controls.minDistance = 500;
   controls.maxDistance = 1000;

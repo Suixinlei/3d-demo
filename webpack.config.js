@@ -93,7 +93,6 @@ module.exports = {
     cannon: 'CANNON', //or true,
     react: 'var React',
     'react-dom': 'var ReactDOM',
-    '@alife/aisc-widgets': 'var AiscWidgets',
     three: 'THREE',
     tween: 'TWEEN',
     mapboxgl: 'mapboxgl',

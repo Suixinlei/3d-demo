@@ -87,7 +87,7 @@ function expand() {
   const originalVertices = [];
   const verticesCount = spherePoints.geometry.attributes.position.count;
 
-  const tween = new TWEEN.Tween({ x: 0 }).to({ x: 1 }, 500)
+  const tween = new TWEEN.Tween({ x: 0 }).to({ x: 1 }, 2000)
     // .yoyo(true)
     // .repeat( Infinity );
   tween.easing(TWEEN.Easing.Sinusoidal.InOut);
@@ -133,7 +133,7 @@ function zeroExpand() {
   const originalVertices = [];
   const verticesCount = spherePoints.geometry.attributes.position.count;
 
-  const tween = new TWEEN.Tween({ x: 0 }).to({ x: 1 }, 3000).yoyo(true).repeat( Infinity );
+  const tween = new TWEEN.Tween({ x: 0 }).to({ x: 1 }, 5000).yoyo(true).repeat( Infinity );
   tween.easing(TWEEN.Easing.Sinusoidal.InOut);
   tween.onStart(() => {
     const p = spherePoints.geometry.attributes.position.array;

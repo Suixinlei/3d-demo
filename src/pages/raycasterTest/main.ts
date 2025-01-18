@@ -1,7 +1,6 @@
-const THREE = require('three');
-const Stats = require('stats.js');
-
-require('./index.css');
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import Stats from 'stats.js';
 
 const container = document.createElement( 'div' );
 let stats;
@@ -46,7 +45,7 @@ function init() {
   window.addEventListener( 'resize', onWindowResize, false );
 
 
-  var controls = new THREE.OrbitControls( camera, renderer.domElement );
+  var controls = new OrbitControls( camera, renderer.domElement );
   controls.addEventListener( 'change', render );
   controls.minDistance = 1;
   controls.maxDistance = 200;

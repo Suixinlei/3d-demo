@@ -5,12 +5,6 @@ import glsl from 'vite-plugin-glsl'
 export default defineConfig({
   build: {
     rollupOptions: {
-      external: ['three'],
-      output: {
-        globals: {
-          'three': 'THREE'
-        }
-      },
       input: {
         home: resolve(__dirname, 'src/pages/home/index.html'),
         expandGlobe: resolve(__dirname, 'src/pages/expandGlobe/index.html'),

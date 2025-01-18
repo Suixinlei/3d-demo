@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
-import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
 import { BokehPass } from 'three/examples/jsm/postprocessing/BokehPass';
 import Stats from 'stats.js';
 import TWEEN from 'tween';
@@ -88,8 +87,6 @@ const postprocessing = {};
 
 const gui = new dat.GUI({width: 300});
 gui.add(settings, 'maxVisibleDot', -1, 1, 0.01).onChange(requestRenderIfNotRequested);
-gui.add(settings, 'logoWidth', 10, 1000, 1).onChange(addHeart);
-gui.addColor(settings, 'logoColor').onChange(addHeart);
 gui.add(settings, 'isSelfRotate').onChange(requestRenderIfNotRequested);
 
 var effectController = {
@@ -122,20 +119,6 @@ const curve = new THREE.CatmullRomCurve3(pathPoints.map(p => {
   return new THREE.Vector3(...p);
 }), true);
 
-let aliCloudHeart = null;
-function addHeart() {
-  if (aliCloudHeart) {
-    scene.remove(aliCloudHeart);
-  }
-  const height = settings.logoWidth;
-  const color = settings.logoColor;
-  var geometry = new THREE.PlaneGeometry( height * 1.5, height, 64 );
-  var texture = new THREE.TextureLoader().load('https://img.alicdn.com/tfs/TB1BLQpbeH2gK0jSZJnXXaT1FXa-2678-1722.png');
-  var material = new THREE.MeshPhongMaterial( { color, transparent: true, opacity: 0.1, map: texture } );
-  aliCloudHeart = new THREE.Mesh( geometry, material );
-  scene.add(aliCloudHeart);
-}
-addHeart();
 
 const sphere = new THREE.Mesh(new THREE.SphereGeometry(props.globeRadius, 64, 64), new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.2 }));
 scene.add(sphere);
@@ -282,8 +265,6 @@ function render() {
     // camera.lookAt(new THREE.Vector3(0, 0, 0));
     camera.position.copy( pos );
   }
-
-  aliCloudHeart.lookAt(camera.position);
 
   updateLabels();
 

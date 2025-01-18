@@ -1,20 +1,17 @@
-// const THREE = require('three');
-// const Stats = require('stats.js');
-// const TWEEN = require('tween');
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Stats from 'stats.js';
-import TWEEN from '@tweenjs/tween.js';
+import TWEEN from 'tween';
 
 import props from './props';
 import pointEarth from './pointEarth/index';
 
-let scene;
-let camera;
-let renderer;
-let stats;
+let scene: THREE.Scene;
+let camera: THREE.Camera;
+let renderer: THREE.Renderer;
+let stats: Stats;
 
-let clock;
+let clock: THREE.Clock;
 
 function Init() {
   scene = new THREE.Scene();
@@ -62,8 +59,21 @@ function Init() {
 
 function userInit() {
   pointEarth.Init(scene);
-  pointEarth.expand();
-  // pointEarth.zeroExpand();
+
+  // 视角转到中国
+  const targetPosition = new THREE.Vector3(169.65690813034206, 530.5187754104497, 706.9415551943782);
+  camera.position.lerp(targetPosition, 0.02);
+
+  setTimeout(() => {
+    // 镜头转回
+    const targetPosition = new THREE.Vector3(0, 0, 0);
+    camera.position.lerp(targetPosition, 0.02);
+
+    // 展开地球
+    // pointEarth.expand();
+    pointEarth.zeroExpand();
+  }, 2000);
+  
 }
 
 function render() {
@@ -72,12 +82,12 @@ function render() {
   pointEarth.update(delta);
 
   camera.lookAt(new THREE.Vector3(0, 0, 0));
+  
   renderer.render( scene, camera );
 }
 
 const animate = () => {
   requestAnimationFrame( animate );
-  // spherePoints.rotation.y += 0.01;
 
   TWEEN.update();
   stats.update();

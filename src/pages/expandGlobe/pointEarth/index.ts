@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import TWEEN from '@tweenjs/tween.js';
+import TWEEN from 'tween';
 import globePoints from './map2-pixel.json';
 import props from '../props';
 import {
@@ -8,30 +8,25 @@ import {
 import pointVertexShader from './glsl/vertexShader.glsl';
 import pointFragmentShader from './glsl/fragmentShader.glsl';
 
-let spherePoints: THREE.Points;
-let spherePositions: Float32Array;
-let planePosition: THREE.Vector3;
-
-interface Point {
-  x: number;
-  y: number;
-}
+let spherePoints;
+let spherePositions;
+let planePosition;
 
 const uniforms = {
   time: { type: "f", value: 0 },
-  resolution: { type: "v2", value: new THREE.Vector2() },
+  resolution: { type: "v2", value: new THREE.Vector2 },
   texture: { value: new THREE.TextureLoader().load( "/images/particle.png" ) }
 };
 
-function addPoint(point: Point): THREE.Vector3 {
+function addPoint(point) {
   const vector = returnSphericalCoordinates(point.x, point.y);
   return vector;
 }
 
-function Init(scene: THREE.Scene): THREE.Points {
-  const vertices: THREE.Vector3[] = [];
+function Init(scene) {
+  const vertices = [];
   // points
-  globePoints.forEach((point: Point) => {
+  globePoints.forEach((point) => {
     if (point.y < (props.mapSize.height * 2 - 8)) {
       vertices.push(addPoint(point));
     } else {
@@ -44,29 +39,30 @@ function Init(scene: THREE.Scene): THREE.Points {
 
   const verticesLength = vertices.length;
   const positions = new Float32Array( vertices.length * 3 );
-  const colors: number[] = [];
-  const sizes = new Float32Array( vertices.length );
+  var colors = [];
+  var sizes = new Float32Array( vertices.length );
 
-  let vertex: THREE.Vector3;
-  const color = new THREE.Color();
-  for ( let i = 0; i < verticesLength; i++ ) {
+  let vertex;
+  var color = new THREE.Color();
+  for ( var i = 0, l = verticesLength; i < l; i ++ ) {
     vertex = vertices[ i ];
     vertex.toArray( positions, i * 3 );
 
     color.setHex(0x00ffff);
+    colors.push(colors);
     color.toArray( colors, i * 3 );
     sizes[ i ] = 8;
   }
   const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
-  geometry.setAttribute( 'size', new THREE.BufferAttribute( sizes, 1 ) );
-  geometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
+  geometry.addAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
+  geometry.addAttribute( 'size', new THREE.BufferAttribute( sizes, 1 ) );
+  geometry.addAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
   const pointMaterial = new THREE.ShaderMaterial( {
     uniforms,
     vertexShader: pointVertexShader,
     fragmentShader: pointFragmentShader,
     transparent: true,
-    vertexColors: THREE.VertexColors,
+    vertexColors: true,
     depthTest: false,
     blending: THREE.AdditiveBlending,
   });
@@ -77,11 +73,11 @@ function Init(scene: THREE.Scene): THREE.Points {
   return spherePoints;
 }
 
-function expand(): void {
+function expand() {
   const startX = - props.mapSize.width;
   const startY = props.mapSize.height;
-  const planeVertices: number[][] = [];
-  globePoints.forEach((point: Point) => {
+  const planeVertices = [];
+  globePoints.forEach((point) => {
     planeVertices.push([
       startX + point.x,
       startY - point.y,
@@ -89,7 +85,7 @@ function expand(): void {
     ]);
   });
 
-  const originalVertices: number[][] = [];
+  const originalVertices = [];
   const verticesCount = spherePoints.geometry.attributes.position.count;
 
   const tween = new TWEEN.Tween({ x: 0 }).to({ x: 1 }, 2000)
@@ -97,7 +93,7 @@ function expand(): void {
     // .repeat( Infinity );
   tween.easing(TWEEN.Easing.Sinusoidal.InOut);
   tween.onStart(() => {
-    const p = spherePoints.geometry.attributes.position.array as Float32Array;
+    const p = spherePoints.geometry.attributes.position.array;
     spherePoints.geometry.attributes.position.needsUpdate = true;
     for (let i = 0; i < verticesCount; i++) {
       originalVertices.push([
@@ -107,8 +103,8 @@ function expand(): void {
       ]);
     }
   });
-  tween.onUpdate(function(this: { x: number }) {
-    const p = spherePoints.geometry.attributes.position.array as Float32Array;
+  tween.onUpdate(function() {
+    const p = spherePoints.geometry.attributes.position.array;
     spherePoints.geometry.attributes.position.needsUpdate = true;
     for (let i = 0; i < verticesCount; i++) {
       const originalPosition = new THREE.Vector3(...originalVertices[i]);
@@ -122,12 +118,12 @@ function expand(): void {
   tween.start();
 }
 
-function zeroExpand(): void {
+function zeroExpand() {
   const zero = new THREE.Vector3(0, 0, 0);
   const startX = - props.mapSize.width;
   const startY = props.mapSize.height;
-  const planeVertices: number[][] = [];
-  globePoints.forEach((point: Point) => {
+  const planeVertices = [];
+  globePoints.forEach((point) => {
     planeVertices.push([
       startX + point.x,
       startY - point.y,
@@ -135,13 +131,13 @@ function zeroExpand(): void {
     ]);
   });
 
-  const originalVertices: number[][] = [];
+  const originalVertices = [];
   const verticesCount = spherePoints.geometry.attributes.position.count;
 
-  const tween = new TWEEN.Tween({ x: 0 }).to({ x: 1 }, 5000).yoyo(true).repeat( Infinity );
+  const tween = new TWEEN.Tween({ x: 0 }).to({ x: 1 }, 5000);
   tween.easing(TWEEN.Easing.Sinusoidal.InOut);
   tween.onStart(() => {
-    const p = spherePoints.geometry.attributes.position.array as Float32Array;
+    const p = spherePoints.geometry.attributes.position.array;
     spherePoints.geometry.attributes.position.needsUpdate = true;
     for (let i = 0; i < verticesCount; i++) {
       originalVertices.push([
@@ -151,8 +147,8 @@ function zeroExpand(): void {
       ]);
     }
   });
-  tween.onUpdate(function(this: { x: number }) {
-    const p = spherePoints.geometry.attributes.position.array as Float32Array;
+  tween.onUpdate(function() {
+    const p = spherePoints.geometry.attributes.position.array;
     spherePoints.geometry.attributes.position.needsUpdate = true;
     for (let i = 0; i < verticesCount; i++) {
       const targetPosition = new THREE.Vector3(...planeVertices[i]).multiplyScalar(2);
@@ -165,7 +161,7 @@ function zeroExpand(): void {
   tween.start();
 }
 
-function update(delta: number): void {
+function update(delta) {
   // uniforms.time.value = 0.20;
   uniforms.time.value += delta * 5;
 }

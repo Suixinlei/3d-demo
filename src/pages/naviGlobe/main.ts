@@ -12,7 +12,10 @@ import props from '../../scene/props';
 import routeData from './route.json';
 
 let renderRequested = false;
-const postprocessing = {};
+interface Postprocessing {
+  composer?: EffectComposer;
+}
+const postprocessing: Postprocessing = {};
 
 let width = window.innerWidth;
 let height = window.innerHeight;
@@ -46,32 +49,54 @@ scene.add(pointLightHelper);
 const stats = new Stats();
 document.body.appendChild(stats.dom);
 
-// axisHelper
-var axesHelper = new THREE.AxesHelper(1000);
-scene.add(axesHelper);
-
 const settings = {
   maxVisibleDot: 1,
+  showPath: false,
 };
 
 const gui = new dat.GUI({ width: 300 });
 gui.add(settings, 'maxVisibleDot', -1, 1, 0.01).onChange(requestRenderIfNotRequested);
+gui.add(settings, 'showPath').name('显示路径').onChange((value) => {
+  line.visible = value;
+  requestRenderIfNotRequested();
+});
 
 pointEarth.Init(scene);
 pointEarthBorder.Init(scene);
 initPostprocessing();
 
-function initPostprocessing() {
-  const renderPass = new RenderPass(scene, camera);
+function initPostprocessing(): EffectComposer {
+  const renderPass = new RenderPass(
+    scene,
+    camera,
+    undefined, // overrideMaterial
+    undefined, // clearColor
+    1.0 // clearAlpha
+  );
   const composer = new EffectComposer(renderer);
   composer.addPass(renderPass);
   postprocessing.composer = composer;
+  return composer;
 }
 
 // 画出路径点
 const curve = new THREE.CatmullRomCurve3(routeData.map(p => {
   return new THREE.Vector3(...p);
 }), true);
+
+// 将路径点绘制到场景中
+const points = curve.getPoints(50);
+const extendedPoints = points.map(p => p.normalize().multiplyScalar(props.globeRadius + 10));
+const line = new THREE.Line(
+  new THREE.BufferGeometry().setFromPoints(extendedPoints),
+  new THREE.LineBasicMaterial({ 
+    color: 0xffffff,
+    transparent: true,
+    opacity: 0.8
+  })
+);
+line.visible = settings.showPath;
+scene.add(line);
 
 const sphere = new THREE.Mesh(new THREE.SphereGeometry(props.globeRadius, 64, 64), new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.2 }));
 scene.add(sphere);
@@ -128,8 +153,9 @@ function requestRenderIfNotRequested() {
   height = window.innerHeight;
 
   // 更新 composer 的尺寸
-  const composer = initPostprocessing();
-  composer.setSize(width, height);
+  if (postprocessing.composer) {
+    postprocessing.composer.setSize(width, height);
+  }
 }
 
 window.addEventListener('resize', requestRenderIfNotRequested);

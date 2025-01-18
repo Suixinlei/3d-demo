@@ -30,7 +30,7 @@ const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.inner
 camera.position.z = 850;
 scene.add(camera);
 
-const canvas = document.querySelector('#c');
+const canvas = document.querySelector('#c') as HTMLCanvasElement;
 const renderer = new THREE.WebGLRenderer({canvas});
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.autoClear = false;
@@ -81,14 +81,18 @@ const settings = {
   maxVisibleDot: 1,
 };
 
-const postprocessing = {};
+const postprocessing: {
+  bokeh?: BokehPass;
+  renderPass?: RenderPass;
+  composer?: EffectComposer;
+} = {};
 
 const gui = new dat.GUI({width: 300});
 gui.add(settings, 'maxVisibleDot', -1, 1, 0.01).onChange(requestRenderIfNotRequested);
 gui.add(settings, 'isSelfRotate').onChange(requestRenderIfNotRequested);
 
 var effectController = {
-  focus: 210.0,
+  focus: 340.0,
   aperture:	10,
   maxblur:	1.0
 };
@@ -205,7 +209,7 @@ function updateLabels() {
 
 function initPostprocessing() {
 
-  var renderPass = new RenderPass( scene, camera );
+  var renderPass = new RenderPass( scene, camera, undefined, new THREE.Color(0, 0, 0), 1.0 );
 
   var bokehPass = new BokehPass( scene, camera, {
     focus: 1.0,
